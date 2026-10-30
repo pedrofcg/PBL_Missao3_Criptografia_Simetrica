@@ -1,0 +1,13 @@
+CONTRATO DE PRESTAÇÃO DE SERVIÇOS N. 2026/031 - CONFIDENCIAL
+
+CONTRATANTE: TechSecure Soluções Digitais Ltda.
+CONTRATADA:  Cliente Exemplo S.A.
+
+Cláusula 1 - Objeto: licenciamento da plataforma SecureDocs para 1.200 usuários.
+Cláusula 2 - Valor: R$ 1.250.000,00 (um milhão, duzentos e cinquenta mil reais),
+             pagos em 10 parcelas mensais de R$ 125.000,00.
+Cláusula 3 - Vigência: 36 meses a partir da assinatura.
+Cláusula 4 - Sigilo: as partes se obrigam a manter sigilo absoluto sobre
+             este documento e sobre as informações estratégicas trocadas.
+
+Conta para depósito: Banco 000, Agência 1234, Conta 99999-9 (dados fictícios).

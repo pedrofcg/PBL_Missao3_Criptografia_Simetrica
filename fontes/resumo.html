@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Resumo – Missão 3 – SecureDocs</title>
+<style>
+  @page { size: A4; margin: 20mm 18mm 20mm 18mm; }
+  :root { --azul:#0b2545; --teal:#0f766e; --cinza:#475569; --claro:#f1f5f9; --borda:#cbd5e1; --verm:#b91c1c; --verde:#15803d; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Calibri, Arial, sans-serif; font-size: 10.5pt; line-height: 1.5; color:#0f172a; margin:0; }
+  h1 { font-size: 22pt; color: var(--azul); margin: 0 0 4pt; line-height:1.2; }
+  h2 { font-size: 14pt; color: var(--azul); border-bottom: 2px solid var(--teal); padding-bottom: 3pt; margin: 20pt 0 8pt; page-break-after: avoid; }
+  h3 { font-size: 11.5pt; color: var(--teal); margin: 14pt 0 5pt; page-break-after: avoid; }
+  p { margin: 0 0 7pt; text-align: justify; }
+  ul, ol { margin: 0 0 8pt; padding-left: 18pt; }
+  li { margin-bottom: 2pt; }
+  code, .mono { font-family: Consolas, "Cascadia Mono", monospace; font-size: 9pt; }
+  code { background: var(--claro); padding: 0 3px; border-radius: 3px; }
+  pre { font-family: Consolas, monospace; font-size: 8.3pt; line-height:1.35; background:#0f172a; color:#e2e8f0; padding: 8pt 10pt; border-radius: 5px; white-space: pre-wrap; page-break-inside: avoid; margin: 4pt 0 10pt; }
+  table { width: 100%; border-collapse: collapse; margin: 4pt 0 10pt; font-size: 9.2pt; page-break-inside: avoid; }
+  th { background: var(--azul); color: #fff; text-align: left; padding: 4pt 6pt; font-weight: 600; }
+  td { padding: 3.5pt 6pt; border-bottom: 1px solid var(--borda); vertical-align: top; }
+  tr:nth-child(even) td { background: #f8fafc; }
+  .capa { border-left: 6px solid var(--teal); padding: 6pt 0 6pt 14pt; margin-bottom: 14pt; }
+  .sub { color: var(--cinza); font-size: 11pt; }
+  .meta { margin-top: 8pt; font-size: 9.5pt; color: var(--cinza); }
+  .caixa { background: var(--claro); border-left: 4px solid var(--teal); padding: 7pt 10pt; margin: 6pt 0 10pt; border-radius: 0 4px 4px 0; page-break-inside: avoid; }
+  .caixa.alerta { border-left-color: var(--verm); background:#fef2f2; }
+  .caixa.ok { border-left-color: var(--verde); background:#f0fdf4; }
+  .caixa p:last-child { margin-bottom:0; }
+  .formula { font-family: Cambria, "Times New Roman", serif; font-size: 11pt; text-align:center; margin: 4pt 0 8pt; }
+  figure { margin: 6pt 0 12pt; text-align: center; page-break-inside: avoid; }
+  figcaption { font-size: 8.8pt; color: var(--cinza); margin-top: 3pt; }
+  .sumario { columns: 2; font-size: 9.8pt; }
+  .sumario li { break-inside: avoid; }
+  .quebra { page-break-before: always; }
+  .bad { color: var(--verm); font-weight: 600; } .good { color: var(--verde); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="capa">
+  <div class="sub">PBL · Segurança e Criptografia · Projeto SecureDocs (TechSecure)</div>
+  <h1>Missão 3 – Milhares de documentos foram roubados</h1>
+  <div class="sub">Resumo: criptografia simétrica (DES, RC5 e AES), escolha do algoritmo e o problema da distribuição de chaves</div>
+  <div class="meta">Equipe de Especialistas em Segurança e Criptografia: Aluno 1 · Aluno 2 · Aluno 3 · Aluno 4 · Aluno 5 &nbsp;|&nbsp; Outubro de 2026</div>
+</div>
+
+<ol class="sumario">
+  <li>Contexto da missão</li>
+  <li>Fundamentos de criptografia simétrica</li>
+  <li>Implementação do DES</li>
+  <li>Implementação do RC5</li>
+  <li>Implementação do AES</li>
+  <li>Modos de operação e formato de arquivo</li>
+  <li>Experimento: Arquivo → AES → Cifrado → AES → Arquivo</li>
+  <li>Testes e ataques realizados</li>
+  <li>Comparativo DES × RC5 × AES</li>
+  <li>Justificativa: qual algoritmo usar no SecureDocs</li>
+  <li>Nova descoberta: como entregar a chave secreta?</li>
+  <li>A biblioteca entregue</li>
+  <li>Referências</li>
+</ol>
+
+<h2>1. Contexto da missão</h2>
+<p>Um invasor copiou arquivos do servidor do SecureDocs. Eles estavam protegidos por <b>cifras clássicas</b> (substituição e transposição, como César e Vigenère). Essas cifras mantêm a estatística da língua: a frequência das letras e os padrões repetidos aparecem no texto cifrado, e a análise de frequência ou a força bruta sobre um espaço de chaves pequeno revela o conteúdo em minutos. A pergunta da TechSecure é:</p>
+<div class="caixa"><p><i>“Mesmo que um invasor consiga copiar nossos arquivos, como podemos impedir que ele conheça seus conteúdos?”</i></p></div>
+<p>A resposta é cifrar os documentos em repouso com uma <b>cifra simétrica moderna</b>. Ela deve resistir à criptoanálise e ter uma chave grande o bastante para tornar a força bruta inviável hoje e no futuro. Para isso a equipe estudou, implementou e comparou o DES, o RC5 e o AES.</p>
+
+<h2>2. Fundamentos de criptografia simétrica</h2>
+<p>Na criptografia <b>simétrica</b> a mesma chave secreta <i>K</i> cifra e decifra: <span class="formula">C = E<sub>K</sub>(P) &nbsp;&nbsp; P = D<sub>K</sub>(C)</span></p>
+<ul>
+  <li><b>Cifra de bloco:</b> transforma blocos de tamanho fixo (64 bits no DES e no RC5-32, 128 bits no AES). Para mensagens maiores é usado um <i>modo de operação</i> (seção 6).</li>
+  <li><b>Confusão e difusão (Shannon, 1949):</b> a confusão esconde a relação entre chave e cifrado (S-boxes, rotações dependentes de dados). A difusão espalha a influência de cada bit do texto por todo o bloco (permutações, MixColumns). Na prática, mudar um bit da entrada muda cerca de metade dos bits da saída (<i>efeito avalanche</i>).</li>
+  <li><b>Estruturas:</b> <i>rede de Feistel</i> (DES, e de forma generalizada o RC5): cada rodada processa metade do bloco, e a decifragem usa o mesmo circuito com as subchaves invertidas. <i>Rede de substituição-permutação</i> (AES): todas as rodadas transformam o bloco inteiro, e cada etapa tem uma inversa própria.</li>
+  <li><b>Princípio de Kerckhoffs:</b> o algoritmo é público; a segurança depende apenas do sigilo da chave. Por isso o tamanho da chave e a resistência à criptoanálise são os critérios centrais.</li>
+</ul>
+
+<h2>3. Implementação do DES</h2>
+<p>O <b>Data Encryption Standard</b> (IBM/NSA, FIPS 46, 1977) cifra blocos de <b>64 bits</b> com chave de <b>64 bits, dos quais 56 são efetivos</b> (8 são de paridade), em <b>16 rodadas de Feistel</b>. Arquivo: <code>securedocs_crypto/des.py</code>.</p>
+<h3>3.1 Algoritmo implementado</h3>
+<ol>
+  <li><b>Permutação inicial (IP):</b> reordena os 64 bits do bloco segundo a tabela <code>IP</code>, que divide o resultado em duas metades de 32 bits, L<sub>0</sub> e R<sub>0</sub>.</li>
+  <li><b>16 rodadas de Feistel:</b> <span class="formula">L<sub>i</sub> = R<sub>i−1</sub> &nbsp;&nbsp;&nbsp; R<sub>i</sub> = L<sub>i−1</sub> ⊕ f(R<sub>i−1</sub>, K<sub>i</sub>)</span></li>
+  <li><b>Função f (<code>_funcao_f</code>):</b>
+    <ul>
+      <li><i>Expansão E:</i> 32 → 48 bits (bits das bordas de cada grupo são duplicados);</li>
+      <li><i>XOR</i> com a subchave K<sub>i</sub> de 48 bits;</li>
+      <li><i>8 S-boxes</i>: cada grupo de 6 bits vira 4 bits. O 1º e o 6º bits escolhem a linha (0–3) e os 4 bits centrais escolhem a coluna (0–15). É a <b>única etapa não linear</b> do DES;</li>
+      <li><i>Permutação P</i> sobre os 32 bits resultantes.</li>
+    </ul></li>
+  <li><b>Troca final e IP<sup>−1</sup>:</b> após a 16ª rodada as metades não são trocadas (R<sub>16</sub>‖L<sub>16</sub>), e aplica-se a permutação final <code>FP</code>.</li>
+  <li><b>Escalonamento de chave (<code>gerar_subchaves</code>):</b> <code>PC-1</code> descarta a paridade (64 → 56 bits) e separa as metades C e D de 28 bits. Em cada rodada, C e D giram 1 ou 2 posições à esquerda (<code>SHIFTS</code>), e <code>PC-2</code> escolhe 48 bits para formar K<sub>i</sub>.</li>
+  <li><b>Decifragem:</b> pela propriedade da rede de Feistel, é a mesma função com as subchaves em ordem inversa (<code>self._subchaves[::-1]</code>).</li>
+</ol>
+<p><b>Decisões de implementação:</b> o bloco é manipulado como um inteiro Python. Uma única função genérica <code>_permutar(valor, tabela, bits)</code> aplica todas as tabelas do padrão (IP, FP, E, P, PC-1, PC-2), que foram copiadas literalmente do FIPS 46-3 (posições de 1 a 64, bit 1 = mais significativo). Também foi implementado o <b>3DES-EDE</b> (<code>TripleDES</code>): C = E<sub>K3</sub>(D<sub>K2</sub>(E<sub>K1</sub>(P))), com chave de 16 ou 24 bytes.</p>
+<h3>3.2 Segurança</h3>
+<div class="caixa alerta"><p><b>Inseguro.</b> O espaço de 2<sup>56</sup> chaves foi quebrado por força bruta em 1998 pela máquina <i>Deep Crack</i> da EFF (56 horas) e em 1999 em 22 horas, com a ajuda do distributed.net. Também existem a criptoanálise diferencial (2<sup>47</sup> textos escolhidos) e a linear (2<sup>43</sup> textos conhecidos). O bloco de 64 bits permite ataques de aniversário (<i>Sweet32</i>) após ~32 GB cifrados com a mesma chave. O 3DES amplia a chave (112 bits efetivos), mas herda o bloco de 64 bits, é 3× mais lento e foi proibido pelo NIST para cifrar novos dados a partir de 2024 (SP 800-131A Rev. 2).</p></div>
+
+<h2>4. Implementação do RC5</h2>
+<p>O <b>RC5</b> (Ron Rivest, 1994; RFC 2040) é uma cifra de bloco <b>totalmente parametrizada</b>, notada RC5-<i>w</i>/<i>r</i>/<i>b</i>: palavra de <i>w</i> bits (16, 32 ou 64, logo bloco de 2<i>w</i> bits), <i>r</i> rodadas (0–255) e chave de <i>b</i> bytes (0–255). A configuração de referência é a <b>RC5-32/12/16</b>: bloco de 64 bits, 12 rodadas e chave de 128 bits. Arquivo: <code>securedocs_crypto/rc5.py</code>.</p>
+<h3>4.1 Algoritmo implementado</h3>
+<p>Usa apenas três operações, todas módulo 2<sup>w</sup>: soma (+), XOR (⊕) e <b>rotação dependente dos dados</b> (⋘). O número de posições rotacionadas vem do próprio texto, o que dá a não linearidade sem S-boxes.</p>
+<ol>
+  <li><b>Expansão de chave (<code>_expandir_chave</code>):</b>
+    <ul>
+      <li>a chave é convertida em <i>c</i> palavras L[ ] (little-endian);</li>
+      <li>a tabela S de <i>t</i> = 2<i>r</i>+2 palavras é inicializada com as “constantes mágicas” P<sub>w</sub> = Odd((e−2)·2<sup>w</sup>) e Q<sub>w</sub> = Odd((φ−1)·2<sup>w</sup>): S[0] = P, S[i] = S[i−1] + Q;</li>
+      <li>a chave é misturada em S com 3·max(<i>t</i>, <i>c</i>) iterações: A = S[i] = (S[i]+A+B) ⋘ 3; &nbsp;B = L[j] = (L[j]+A+B) ⋘ (A+B).</li>
+    </ul></li>
+  <li><b>Cifragem (<code>encrypt_block</code>):</b> A = A + S[0]; B = B + S[1]; para i = 1..r: <span class="formula">A = ((A ⊕ B) ⋘ B) + S[2i] &nbsp;&nbsp;&nbsp; B = ((B ⊕ A) ⋘ A) + S[2i+1]</span></li>
+  <li><b>Decifragem (<code>decrypt_block</code>):</b> percorre as rodadas de trás para frente, com subtração e rotação à direita: B = ((B − S[2i+1]) ⋙ A) ⊕ A; A = ((A − S[2i]) ⋙ B) ⊕ B; e por fim B −= S[1], A −= S[0].</li>
+</ol>
+<p><b>Decisões de implementação:</b> a classe <code>RC5(chave, rodadas=12, tamanho_palavra=32)</code> aceita qualquer <i>w</i> ∈ {16, 32, 64}. A máscara <code>(1 &lt;&lt; w) − 1</code> faz as reduções módulo 2<sup>w</sup>, e a rotação é feita com <code>n % w</code>, porque só os log<sub>2</sub>(w) bits menos significativos do valor importam.</p>
+<h3>4.2 Segurança</h3>
+<div class="caixa alerta"><p><b>Não recomendado.</b> O RC5-32/12 é vulnerável à criptoanálise diferencial com cerca de 2<sup>44</sup> textos escolhidos (Biryukov &amp; Kushilevitz, 1998), por isso recomenda-se pelo menos 18–20 rodadas. O bloco de 64 bits tem o mesmo limite de aniversário do DES. O RC5 foi patenteado até 2015, nunca foi padronizado pelo NIST e não tem aceleração em hardware. Uma chave RC5 de 64 bits foi quebrada pelo distributed.net em 2002. É uma cifra elegante e rápida em software, mas fica atrás do AES em análise pública, padronização e suporte.</p></div>
+
+<h2>5. Implementação do AES</h2>
+<p>O <b>AES</b> (algoritmo Rijndael, de Daemen e Rijmen) venceu o concurso público do NIST e virou o <b>FIPS 197</b> em 2001. Ele cifra blocos de <b>128 bits</b> com chaves de <b>128, 192 ou 256 bits</b>, em 10, 12 ou 14 rodadas de uma <b>rede de substituição-permutação</b>. Arquivo: <code>securedocs_crypto/aes.py</code>.</p>
+<h3>5.1 Algoritmo implementado</h3>
+<p>O bloco é tratado como um <b>estado</b>: uma matriz 4×4 de bytes preenchida coluna a coluna. Os bytes são elementos do corpo finito <b>GF(2<sup>8</sup>)</b> com o polinômio m(x) = x<sup>8</sup>+x<sup>4</sup>+x<sup>3</sup>+x+1 (0x11B). A soma é XOR e a multiplicação é feita por <code>xtime</code>/<code>gmul</code>.</p>
+<table>
+  <tr><th style="width:22%">Etapa</th><th>O que faz</th><th style="width:22%">Propriedade</th></tr>
+  <tr><td><b>SubBytes</b></td><td>Substitui cada byte pela S-box: inverso multiplicativo em GF(2<sup>8</sup>) seguido de uma transformação afim (⊕ 0x63).</td><td>Confusão (não linear)</td></tr>
+  <tr><td><b>ShiftRows</b></td><td>A linha <i>r</i> do estado gira <i>r</i> posições à esquerda.</td><td>Difusão entre colunas</td></tr>
+  <tr><td><b>MixColumns</b></td><td>Cada coluna é multiplicada pela matriz circulante [02 03 01 01] em GF(2<sup>8</sup>).</td><td>Difusão dentro da coluna</td></tr>
+  <tr><td><b>AddRoundKey</b></td><td>XOR do estado com a chave da rodada (128 bits).</td><td>Introduz a chave</td></tr>
+</table>
+<ul>
+  <li><b>Fluxo:</b> AddRoundKey inicial; Nr−1 rodadas completas; a última rodada sem MixColumns.</li>
+  <li><b>Expansão de chave (<code>expandir_chave</code>):</b> gera 4·(Nr+1) palavras de 32 bits. A cada Nk palavras aplica RotWord, SubWord e XOR com a constante de rodada Rcon (potências de x em GF(2<sup>8</sup>)). No AES-256 há um SubWord extra no meio de cada grupo.</li>
+  <li><b>Decifragem:</b> aplica as inversas (InvShiftRows, InvSubBytes, AddRoundKey, InvMixColumns com a matriz [0E 0B 0D 09]) e as chaves de rodada em ordem reversa.</li>
+</ul>
+<p><b>Decisões de implementação:</b> a <b>S-box não foi copiada de uma tabela</b>. Ela é <i>calculada</i> na importação do módulo (inverso por exponenciação a<sup>254</sup> + transformação afim), e o teste confere os valores conhecidos (S[00]=63, S[53]=ED). As multiplicações por 2, 3, 9, 11, 13 e 14 são pré-calculadas em tabelas para acelerar MixColumns. O estado é uma lista de 16 inteiros em ordem de coluna (<code>estado[linha + 4·coluna]</code>).</p>
+<h3>5.2 Segurança</h3>
+<div class="caixa ok"><p><b>Seguro.</b> Após 25 anos de análise pública, o melhor ataque ao AES completo (biclique, 2011) reduz o AES-128 de 2<sup>128</sup> para 2<sup>126,1</sup> operações, uma diferença sem efeito prático. Contra computadores quânticos, o algoritmo de Grover reduziria a segurança à metade dos bits: o AES-128 cairia para 2<sup>64</sup>, mas o <b>AES-256 manteria 2<sup>128</sup></b>. Por isso o AES-256 é a recomendação para dados que precisam continuar sigilosos por décadas (por exemplo, a suíte CNSA 2.0 da NSA).</p></div>
+
+<h2>6. Modos de operação e formato de arquivo</h2>
+<p>A cifra de bloco sozinha só processa 16 bytes. O módulo <code>modos.py</code> implementa, de forma genérica para qualquer cifra da biblioteca:</p>
+<ul>
+  <li><b>ECB:</b> cada bloco é cifrado isoladamente. Blocos iguais geram cifrados iguais e <span class="bad">vazam padrões</span> (figura 1). Implementado apenas para demonstração.</li>
+  <li><b>CBC:</b> C<sub>i</sub> = E<sub>K</sub>(P<sub>i</sub> ⊕ C<sub>i−1</sub>), com C<sub>0</sub> = IV aleatório e padding <b>PKCS#7</b>.</li>
+  <li><b>CTR:</b> C<sub>i</sub> = P<sub>i</sub> ⊕ E<sub>K</sub>(contador + i). Funciona como cifra de fluxo, sem padding, e permite paralelizar.</li>
+</ul>
+<figure>
+  <img src="../biblioteca/exemplos/saida/ecb_vs_cbc.svg" style="width:92%">
+  <figcaption>Figura 1 – Saída real de <code>demo_ecb_vs_cbc.py</code>: um desenho de 288 blocos cifrado com AES. No modo ECB o cadeado continua visível (só 2 blocos cifrados distintos); no CBC, os 288 blocos são distintos.</figcaption>
+</figure>
+<p><b>Formato do arquivo cifrado do SecureDocs (<code>arquivo.py</code>):</b></p>
+<pre>| "SDOC" (4 B) | versão (1 B) | salt (16 B) | IV (16 B) | texto cifrado AES-256-CBC (n B) | HMAC-SHA256 (32 B) |</pre>
+<ul>
+  <li><b>Chave derivada da senha</b> com PBKDF2-HMAC-SHA256 (200.000 iterações e salt aleatório): 32 bytes para o AES-256 e 32 bytes para o HMAC. O salt faz a mesma senha gerar chaves diferentes em cada arquivo, e as iterações deixam lentos os ataques de dicionário.</li>
+  <li><b>IV aleatório</b> e novo a cada arquivo: o mesmo documento cifrado duas vezes gera arquivos diferentes.</li>
+  <li><b>Encrypt-then-MAC:</b> o HMAC cobre cabeçalho e cifrado e é verificado <i>antes</i> da decifragem, com comparação em tempo constante. Isso responde ao incidente do <b>contrato adulterado</b>: qualquer alteração faz o arquivo ser recusado.</li>
+</ul>
+
+<h2>7. Experimento: Arquivo → AES → Cifrado → AES → Arquivo</h2>
+<p>Script <code>exemplos/demo_aes_arquivo.py</code>, executado sobre um contrato fictício de 681 bytes. Saída real (trechos):</p>
+<pre>[1] Arquivo original : contrato_confidencial.txt (681 bytes)
+    SHA-256          : 2a2a67bd95b088a2a1e2280e9cfa3269bb6dc2f5620c708dce8dc0cb95bfd8a0
+    Entropia         : 5.12 bits/byte
+   0000  43 4f 4e 54 52 41 54 4f 20 44 45 20 50 52 45 53  CONTRATO DE PRES
+
+[2] AES-256-CBC + HMAC-SHA256 -> contrato_confidencial.txt.sdoc (757 bytes)
+    Entropia         : 7.68 bits/byte
+    Contém 'R$ 1.250.000'? NÃO
+   0000  53 44 4f 43 01 3b 69 74 d0 75 59 91 de 3e eb 0c  SDOC.;it.uY..>..
+   0010  21 32 34 a5 9e 11 0e 2c 14 da 6c 7e ca 50 46 ef  !24....,..l~.PF.
+
+[3] AES-256 (decifrar) -> contrato_recuperado.txt
+    SHA-256          : 2a2a67bd95b088a2a1e2280e9cfa3269bb6dc2f5620c708dce8dc0cb95bfd8a0
+    Idêntico ao original? SIM
+
+[4] Ataque: invasor altera 1 bit do arquivo cifrado (contrato adulterado)
+    Documento RECUSADO -> Falha de integridade: arquivo adulterado ou senha incorreta.
+
+[5] Ataque: invasor tenta abrir o arquivo roubado com outra senha
+    Documento RECUSADO -> Falha de integridade: arquivo adulterado ou senha incorreta.</pre>
+<p><b>Conclusões:</b> o arquivo recuperado tem exatamente o mesmo SHA-256 do original, então o ciclo é perfeito. O cifrado não contém nenhum trecho legível, e a entropia sobe de 5,12 para 7,68 bits/byte (perto do máximo de 8 para um arquivo pequeno). Os 76 bytes extras são o cabeçalho (37 B), o padding (7 B) e o HMAC (32 B). Um arquivo roubado só serve ao invasor se ele tiver a chave.</p>
+
+<h2>8. Testes e ataques realizados</h2>
+<h3>8.1 Validação por vetores oficiais</h3>
+<p>18 testes automatizados (<code>python -m unittest discover -s tests -v</code>), <b>todos aprovados</b>:</p>
+<table>
+  <tr><th>Algoritmo</th><th>Fonte do vetor</th><th>Chave</th><th>Texto claro</th><th>Cifrado esperado = obtido</th></tr>
+  <tr><td>DES</td><td>Exemplo clássico FIPS 46</td><td class="mono">133457799BBCDFF1</td><td class="mono">0123456789ABCDEF</td><td class="mono">85E813540F0AB405 ✓</td></tr>
+  <tr><td>DES</td><td>NIST SP 800-17</td><td class="mono">0101010101010101</td><td class="mono">8000000000000000</td><td class="mono">95F8A5E5DD31D900 ✓</td></tr>
+  <tr><td>RC5-32/12/16</td><td>Rivest (1994)</td><td class="mono">00…00</td><td class="mono">0000000000000000</td><td class="mono">21A5DBEE154B8F6D ✓</td></tr>
+  <tr><td>RC5-32/12/16</td><td>Rivest (1994)</td><td class="mono">915F4619…A9CE91</td><td class="mono">21A5DBEE154B8F6D</td><td class="mono">F7C013AC5B2B8952 ✓</td></tr>
+  <tr><td>AES-128</td><td>FIPS 197 C.1</td><td class="mono">000102…0E0F</td><td class="mono">00112233…EEFF</td><td class="mono">69C4E0D86A7B0430… ✓</td></tr>
+  <tr><td>AES-192</td><td>FIPS 197 C.2</td><td class="mono">000102…1617</td><td class="mono">00112233…EEFF</td><td class="mono">DDA97CA4864CDFE0… ✓</td></tr>
+  <tr><td>AES-256</td><td>FIPS 197 C.3</td><td class="mono">000102…1E1F</td><td class="mono">00112233…EEFF</td><td class="mono">8EA2B7CA516745BF… ✓</td></tr>
+  <tr><td>AES-CBC / CTR</td><td>NIST SP 800-38A</td><td class="mono">2B7E1516…4F3C</td><td class="mono">6BC1BEE2…172A</td><td class="mono">7649ABAC… / 874D6191… ✓</td></tr>
+</table>
+<h3>8.2 Ataque de força bruta ao DES (prova de conceito)</h3>
+<p>O script <code>ataque_forca_bruta_des.py</code> simula o invasor com um par conhecido (todo contrato começa com “CONTRATO”). Com 14 bits desconhecidos, a chave foi encontrada após <b>12.088 tentativas em 3,2 s</b> (≈ 3.800 chaves/s em Python puro). Extrapolando o tempo médio (metade do espaço de chaves):</p>
+<table>
+  <tr><th>Atacante</th><th>Velocidade</th><th>DES (2<sup>56</sup>)</th><th>3DES (2<sup>112</sup>)</th><th>AES-128</th><th>AES-256</th></tr>
+  <tr><td>Notebook, Python puro</td><td>3,8 mil/s</td><td>3,0·10<sup>5</sup> anos</td><td>2,2·10<sup>22</sup> anos</td><td>1,4·10<sup>27</sup> anos</td><td>4,8·10<sup>65</sup> anos</td></tr>
+  <tr><td>Deep Crack (EFF, 1998)</td><td>9·10<sup>10</sup>/s</td><td class="bad">4,6 dias</td><td>9,1·10<sup>14</sup> anos</td><td>6,0·10<sup>19</sup> anos</td><td>2,0·10<sup>58</sup> anos</td></tr>
+  <tr><td>Cluster de GPUs atual</td><td>10<sup>12</sup>/s</td><td class="bad">10 horas</td><td>8,2·10<sup>13</sup> anos</td><td>5,4·10<sup>18</sup> anos</td><td>1,8·10<sup>57</sup> anos</td></tr>
+</table>
+<p>Para comparação, a idade do universo é de cerca de 1,4·10<sup>10</sup> anos.</p>
+<h3>8.3 Desempenho (Python puro, modo CBC, 32 KB)</h3>
+<table>
+  <tr><th>Algoritmo</th><th>Chave</th><th>Bloco</th><th>Rodadas</th><th>Cifrar (KB/s)</th><th>Decifrar (KB/s)</th></tr>
+  <tr><td>DES</td><td>56</td><td>64</td><td>16</td><td>47,1</td><td>39,8</td></tr>
+  <tr><td>3DES</td><td>112</td><td>64</td><td>48</td><td>15,1</td><td>15,7</td></tr>
+  <tr><td>RC5-32/12/16</td><td>128</td><td>64</td><td>12</td><td>705,1</td><td>784,6</td></tr>
+  <tr><td>AES-128</td><td>128</td><td>128</td><td>10</td><td>316,1</td><td>323,0</td></tr>
+  <tr><td>AES-256</td><td>256</td><td>128</td><td>14</td><td>266,7</td><td>258,4</td></tr>
+</table>
+<p>O RC5 é o mais rápido <i>em software puro</i> (só soma, XOR e rotação). O DES é lento porque permuta bits um a um, uma operação pensada para hardware. Em processadores atuais, porém, as instruções <b>AES-NI</b> cifram AES a vários GB/s, o que o torna o mais rápido na prática.</p>
+
+<h2>9. Comparativo DES × RC5 × AES</h2>
+<table>
+  <tr><th style="width:19%">Critério</th><th>DES</th><th>RC5</th><th>AES</th></tr>
+  <tr><td>Criação / padrão</td><td>IBM, 1977 – FIPS 46</td><td>Rivest, 1994 – RFC 2040</td><td>Daemen e Rijmen, 2001 – FIPS 197</td></tr>
+  <tr><td>Estrutura</td><td>Feistel, 16 rodadas</td><td>Tipo Feistel, r rodadas</td><td>SPN, 10/12/14 rodadas</td></tr>
+  <tr><td>Bloco</td><td>64 bits</td><td>32/64/128 bits (2w)</td><td>128 bits</td></tr>
+  <tr><td>Chave</td><td class="bad">56 bits</td><td>0–2040 bits (usual 128)</td><td class="good">128/192/256 bits</td></tr>
+  <tr><td>Não linearidade</td><td>8 S-boxes fixas</td><td>Rotações dependentes dos dados</td><td>S-box algébrica em GF(2<sup>8</sup>)</td></tr>
+  <tr><td>Melhor ataque conhecido</td><td class="bad">Força bruta prática (horas)</td><td>Diferencial 2<sup>44</sup> (12 rodadas)</td><td class="good">Biclique 2<sup>126,1</sup> (teórico)</td></tr>
+  <tr><td>Resistência quântica (Grover)</td><td class="bad">2<sup>28</sup></td><td>2<sup>64</sup> (chave 128)</td><td class="good">2<sup>128</sup> (AES-256)</td></tr>
+  <tr><td>Aceleração em hardware</td><td>Obsoleta</td><td>Não</td><td class="good">AES-NI, ARMv8-CE</td></tr>
+  <tr><td>Situação atual</td><td class="bad">Retirado (2005)</td><td>Pouco usado, não padronizado</td><td class="good">Padrão mundial (TLS, VPN, discos)</td></tr>
+</table>
+
+<h2>10. Justificativa: qual algoritmo usar no SecureDocs</h2>
+<div class="caixa ok"><p><b>Decisão da equipe: AES com chave de 256 bits.</b></p></div>
+<ol>
+  <li><b>Segurança comprovada:</b> é padrão do NIST, ISO/IEC 18033-3 e da maioria das regulamentações. Resistiu a 25 anos de criptoanálise pública sem ataque prático.</li>
+  <li><b>Chave e bloco adequados:</b> 256 bits tornam a força bruta fisicamente impossível, e o bloco de 128 bits elimina os ataques de aniversário (Sweet32) que afetam DES, 3DES e RC5-32.</li>
+  <li><b>Ameaças futuras:</b> mesmo com o algoritmo de Grover, o AES-256 mantém 128 bits de segurança. Os contratos e documentos estratégicos da TechSecure podem precisar ficar sigilosos por décadas, e um invasor pode guardar os arquivos roubados hoje para tentar quebrá-los depois (<i>harvest now, decrypt later</i>).</li>
+  <li><b>Desempenho e ecossistema:</b> tem aceleração em hardware em praticamente todo processador e bibliotecas maduras e auditadas.</li>
+  <li><b>Por que não os outros:</b> o DES cai em horas. O 3DES é lento, tem bloco de 64 bits e já foi descontinuado. O RC5 com 12 rodadas tem ataque diferencial conhecido, não é padronizado e não tem suporte de hardware.</li>
+</ol>
+<p><b>Como usar:</b> o AES deve rodar em um modo seguro, com IV ou nonce único e autenticação. Na prova de conceito usamos <b>AES-256-CBC + HMAC-SHA256</b> (Encrypt-then-MAC). Em produção, a recomendação é o <b>AES-256-GCM</b> (cifragem autenticada, AEAD) de uma biblioteca auditada, como <code>cryptography</code> ou OpenSSL. Ela dá o mesmo resultado com mais desempenho e proteção contra ataques de canal lateral.</p>
+
+<h2>11. Nova descoberta: como entregar a chave secreta ao destinatário sem que um invasor também consiga obtê-la?</h2>
+<p>Este é o <b>problema da distribuição de chaves</b>, o calcanhar de Aquiles da criptografia simétrica. O AES é forte, mas a chave precisa estar com o remetente <i>e</i> com o destinatário. Se ela for enviada pela mesma Internet que o invasor monitora, ele também a obtém, e toda a cifragem perde o sentido. Além disso, com <i>n</i> usuários seriam necessárias <i>n</i>(<i>n</i>−1)/2 chaves: para os 1.200 usuários do SecureDocs, quase 720 mil chaves.</p>
+<h3>11.1 Alternativas estudadas</h3>
+<table>
+  <tr><th style="width:24%">Solução</th><th>Como funciona</th><th style="width:30%">Limitação</th></tr>
+  <tr><td>Canal alternativo (<i>out-of-band</i>)</td><td>Entregar a chave pessoalmente, por telefone, mensageiro ou pendrive.</td><td>Não escala, é lento e vulnerável a erro humano.</td></tr>
+  <tr><td>Centro de distribuição de chaves (KDC / Kerberos)</td><td>Um servidor confiável compartilha uma chave com cada usuário e gera chaves de sessão sob demanda.</td><td>Ponto único de falha e de confiança. Exige que todos confiem no servidor.</td></tr>
+  <tr><td>Acordo de chaves Diffie-Hellman (DH / ECDH, X25519)</td><td>Cada parte envia apenas um valor <i>público</i>, e ambas calculam o mesmo segredo. Quem só observa a troca não consegue calculá-lo (problema do logaritmo discreto).</td><td>Sozinho não autentica, então é vulnerável a <i>man-in-the-middle</i>. Precisa de certificados ou assinaturas.</td></tr>
+  <tr><td><b>Criptografia híbrida (envelope digital)</b></td><td>O documento é cifrado com uma chave AES aleatória, e <i>essa chave</i> é cifrada com a <b>chave pública</b> do destinatário (RSA-OAEP, ECIES ou ML-KEM).</td><td>Exige uma infraestrutura de chaves públicas (PKI) para confirmar de quem é cada chave pública.</td></tr>
+</table>
+<h3>11.2 Resposta da equipe</h3>
+<div class="caixa"><p><b>A chave secreta não deve viajar em claro.</b> Usa-se <b>criptografia assimétrica</b> para transportar ou combinar a chave simétrica, e o AES para cifrar os dados. Esse esquema é o <b>envelope digital</b>, e é como funcionam TLS 1.3, PGP, S/MIME e os serviços de nuvem (KMS).</p></div>
+<figure>
+<svg viewBox="0 0 720 270" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial" font-size="12" style="width:100%">
+  <defs><marker id="s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker></defs>
+  <rect x="5" y="5" width="250" height="260" rx="10" fill="#ecfeff" stroke="#0f766e"/>
+  <text x="130" y="25" text-anchor="middle" font-weight="700" fill="#0f766e">REMETENTE</text>
+  <rect x="465" y="5" width="250" height="260" rx="10" fill="#ecfeff" stroke="#0f766e"/>
+  <text x="590" y="25" text-anchor="middle" font-weight="700" fill="#0f766e">DESTINATÁRIO</text>
+  <rect x="275" y="40" width="170" height="190" rx="10" fill="#fef2f2" stroke="#b91c1c" stroke-dasharray="5 4"/>
+  <text x="360" y="60" text-anchor="middle" font-weight="700" fill="#b91c1c">INTERNET</text>
+  <text x="360" y="76" text-anchor="middle" fill="#b91c1c" font-size="11">invasor vê só cifrados</text>
+  <rect x="20" y="40" width="100" height="34" rx="6" fill="#fff" stroke="#334155"/><text x="70" y="61" text-anchor="middle">Documento</text>
+  <rect x="140" y="40" width="100" height="34" rx="6" fill="#fef9c3" stroke="#a16207"/><text x="190" y="55" text-anchor="middle">Chave AES</text><text x="190" y="68" text-anchor="middle" font-size="10">aleatória (DEK)</text>
+  <rect x="20" y="110" width="100" height="40" rx="6" fill="#0b2545"/><text x="70" y="128" text-anchor="middle" fill="#fff">AES-256</text><text x="70" y="142" text-anchor="middle" fill="#cbd5e1" font-size="10">cifra o arquivo</text>
+  <rect x="140" y="160" width="100" height="40" rx="6" fill="#0f766e"/><text x="190" y="175" text-anchor="middle" fill="#fff" font-size="11">Cifra com chave</text><text x="190" y="190" text-anchor="middle" fill="#fff" font-size="11">PÚBLICA do dest.</text>
+  <line x1="70" y1="74" x2="70" y2="108" stroke="#334155" marker-end="url(#s)"/>
+  <line x1="190" y1="74" x2="190" y2="158" stroke="#334155" marker-end="url(#s)"/>
+  <path d="M150 62 Q120 90 95 108" fill="none" stroke="#a16207" stroke-dasharray="3 3" marker-end="url(#s)"/>
+  <rect x="290" y="100" width="140" height="30" rx="6" fill="#fff" stroke="#334155"/><text x="360" y="119" text-anchor="middle">Documento cifrado</text>
+  <rect x="290" y="150" width="140" height="30" rx="6" fill="#fff" stroke="#334155"/><text x="360" y="169" text-anchor="middle">Chave AES cifrada</text>
+  <line x1="120" y1="122" x2="288" y2="115" stroke="#334155" marker-end="url(#s)"/>
+  <line x1="240" y1="178" x2="288" y2="168" stroke="#334155" marker-end="url(#s)"/>
+  <rect x="600" y="150" width="105" height="40" rx="6" fill="#0f766e"/><text x="652" y="165" text-anchor="middle" fill="#fff" font-size="11">Decifra com chave</text><text x="652" y="180" text-anchor="middle" fill="#fff" font-size="11">PRIVADA</text>
+  <rect x="480" y="100" width="105" height="40" rx="6" fill="#0b2545"/><text x="532" y="118" text-anchor="middle" fill="#fff">AES-256</text><text x="532" y="132" text-anchor="middle" fill="#cbd5e1" font-size="10">decifra o arquivo</text>
+  <rect x="480" y="200" width="105" height="34" rx="6" fill="#fff" stroke="#334155"/><text x="532" y="221" text-anchor="middle">Documento</text>
+  <line x1="430" y1="115" x2="478" y2="118" stroke="#334155" marker-end="url(#s)"/>
+  <line x1="430" y1="165" x2="598" y2="170" stroke="#334155" marker-end="url(#s)"/>
+  <path d="M600 160 Q590 140 587 132" fill="none" stroke="#a16207" stroke-dasharray="3 3" marker-end="url(#s)"/>
+  <text x="625" y="140" text-anchor="middle" fill="#a16207" font-size="10">chave AES</text>
+  <line x1="532" y1="140" x2="532" y2="198" stroke="#334155" marker-end="url(#s)"/>
+  <text x="130" y="225" text-anchor="middle" font-size="10.5" fill="#334155">A chave privada nunca sai do</text>
+  <text x="130" y="239" text-anchor="middle" font-size="10.5" fill="#334155">destinatário; a chave AES nunca</text>
+  <text x="130" y="253" text-anchor="middle" font-size="10.5" fill="#334155">trafega em claro.</text>
+  <text x="360" y="210" text-anchor="middle" font-size="10.5" fill="#b91c1c">sem a chave privada,</text>
+  <text x="360" y="223" text-anchor="middle" font-size="10.5" fill="#b91c1c">nada pode ser lido</text>
+</svg>
+<figcaption>Figura 2 – Envelope digital: o AES protege os dados e a criptografia assimétrica protege a chave do AES.</figcaption>
+</figure>
+<p><b>Proposta de arquitetura para o SecureDocs:</b></p>
+<ol>
+  <li>Cada usuário tem um par de chaves (pública/privada). As chaves públicas são publicadas em <b>certificados digitais</b> emitidos pela autoridade certificadora da TechSecure (PKI), o que impede o <i>man-in-the-middle</i>.</li>
+  <li>Para cada documento é gerada uma <b>chave AES-256 aleatória e única</b> (DEK). O documento é cifrado com AES-256-GCM.</li>
+  <li>A DEK é cifrada (“embrulhada”) com a chave pública de cada destinatário autorizado e guardada junto ao documento. Assim, um único arquivo pode ser compartilhado com vários usuários sem que ninguém precise conhecer a chave de outro.</li>
+  <li>A chave privada fica no dispositivo do usuário ou em um módulo de hardware (HSM/KMS) e nunca é enviada.</li>
+  <li>Toda comunicação passa por <b>TLS 1.3</b>, em que as partes fazem ECDHE, uma variante efêmera de Diffie-Hellman: mesmo que uma chave vaze no futuro, as sessões passadas continuam protegidas (<i>forward secrecy</i>).</li>
+  <li><b>Ameaças futuras:</b> como RSA e ECDH serão quebrados por um computador quântico de grande porte, recomenda-se adotar o modo híbrido <b>X25519 + ML-KEM-768</b> (FIPS 203, 2024), que já é usado no TLS dos principais navegadores.</li>
+</ol>
+<p>Os próximos conteúdos da disciplina (criptografia assimétrica, funções hash e assinaturas digitais) serão as próximas missões. Eles completam a arquitetura, garantindo também <b>autenticidade</b> e <b>não repúdio</b>.</p>
+
+<h2>12. A biblioteca entregue</h2>
+<pre>biblioteca/
+├── securedocs_crypto/
+│   ├── __init__.py      API pública
+│   ├── __main__.py      linha de comando: python -m securedocs_crypto cifrar|decifrar
+│   ├── des.py           DES + 3DES
+│   ├── rc5.py           RC5-w/r/b
+│   ├── aes.py           AES-128/192/256 (S-box calculada)
+│   ├── modos.py         ECB, CBC, CTR, PKCS#7
+│   └── arquivo.py       AES-256-CBC + HMAC-SHA256 + PBKDF2 (formato .sdoc)
+├── tests/test_vetores.py          18 testes com vetores oficiais
+└── exemplos/
+    ├── demo_aes_arquivo.py        experimento da missão
+    ├── ataque_forca_bruta_des.py  força bruta + estimativas
+    ├── comparativo_desempenho.py  vazão de cada algoritmo
+    ├── demo_ecb_vs_cbc.py         vazamento de padrões no ECB
+    └── saida/                     resultados obtidos</pre>
+<p>Python puro, sem dependências externas. Exemplo de uso:</p>
+<pre>from securedocs_crypto import AES, cbc_encrypt, cbc_decrypt
+cifra = AES(chave_de_32_bytes)                 # AES-256
+iv, cifrado = cbc_encrypt(cifra, b"relatorio financeiro")
+original = cbc_decrypt(cifra, iv, cifrado)</pre>
+<p class="caixa alerta" style="text-align:left">Código <b>didático</b>: não é protegido contra ataques de canal lateral (tempo, cache) e é lento. Em produção, devem ser usadas bibliotecas auditadas.</p>
+
+<h2>13. Referências</h2>
+<ul style="font-size:9.3pt">
+  <li>NIST. <i>FIPS PUB 46-3 – Data Encryption Standard (DES)</i>. 1999.</li>
+  <li>NIST. <i>FIPS PUB 197 – Advanced Encryption Standard (AES)</i>. 2001 (atualizado em 2023).</li>
+  <li>NIST. <i>SP 800-38A – Recommendation for Block Cipher Modes of Operation</i>. 2001.</li>
+  <li>NIST. <i>SP 800-131A Rev. 2 – Transitioning the Use of Cryptographic Algorithms and Key Lengths</i>. 2019.</li>
+  <li>NIST. <i>FIPS 203 – Module-Lattice-Based Key-Encapsulation Mechanism (ML-KEM)</i>. 2024.</li>
+  <li>RIVEST, R. <i>The RC5 Encryption Algorithm</i>. Fast Software Encryption, LNCS 1008, 1995.</li>
+  <li>BALDWIN, R.; RIVEST, R. <i>RFC 2040 – The RC5, RC5-CBC, RC5-CBC-Pad, and RC5-CTS Algorithms</i>. 1996.</li>
+  <li>BIRYUKOV, A.; KUSHILEVITZ, E. <i>Improved Cryptanalysis of RC5</i>. EUROCRYPT 1998.</li>
+  <li>BOGDANOV, A.; KHOVRATOVICH, D.; RECHBERGER, C. <i>Biclique Cryptanalysis of the Full AES</i>. ASIACRYPT 2011.</li>
+  <li>ELECTRONIC FRONTIER FOUNDATION. <i>Cracking DES: Secrets of Encryption Research, Wiretap Politics &amp; Chip Design</i>. 1998.</li>
+  <li>BHARGAVAN, K.; LEURENT, G. <i>On the Practical (In-)Security of 64-bit Block Ciphers (Sweet32)</i>. ACM CCS 2016.</li>
+  <li>STALLINGS, W. <i>Criptografia e Segurança de Redes: Princípios e Práticas</i>. 6. ed. Pearson, 2015.</li>
+  <li>DIFFIE, W.; HELLMAN, M. <i>New Directions in Cryptography</i>. IEEE Trans. Inf. Theory, 1976.</li>
+</ul>
+
+</body>
+</html>

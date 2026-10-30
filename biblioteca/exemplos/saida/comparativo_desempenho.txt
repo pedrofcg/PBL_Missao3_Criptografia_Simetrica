@@ -1,0 +1,12 @@
+==============================================================================
+ DESEMPENHO EM MODO CBC - 32 KB de dados aleatórios (Python puro)
+==============================================================================
+ Algoritmo        Chave   Bloco  Rodadas   Cifrar KB/s   Decifrar KB/s
+ ---------------------------------------------------------------------
+ DES               56 b    64 b       16          47.1            39.8
+ 3DES             112 b    64 b       48          15.1            15.7
+ RC5-32/12/16     128 b    64 b       12         705.1           784.6
+ AES-128          128 b   128 b       10         316.1           323.0
+ AES-256          256 b   128 b       14         266.7           258.4
+
+ Observação: em hardware moderno com AES-NI, o AES ultrapassa vários GB/s.

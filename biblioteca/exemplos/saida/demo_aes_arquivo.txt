@@ -1,0 +1,32 @@
+========================================================================
+ EXPERIMENTO: Arquivo original -> AES -> cifrado -> AES -> original
+========================================================================
+
+[1] Arquivo original : contrato_confidencial.txt (681 bytes)
+    SHA-256          : 2a2a67bd95b088a2a1e2280e9cfa3269bb6dc2f5620c708dce8dc0cb95bfd8a0
+    Entropia         : 5.12 bits/byte
+   0000  43 4f 4e 54 52 41 54 4f 20 44 45 20 50 52 45 53  CONTRATO DE PRES
+   0010  54 41 c3 87 c3 83 4f 20 44 45 20 53 45 52 56 49  TA....O DE SERVI
+   0020  c3 87 4f 53 20 4e 2e 20 32 30 32 36 2f 30 33 31  ..OS N. 2026/031
+   0030  20 2d 20 43 4f 4e 46 49 44 45 4e 43 49 41 4c 0d   - CONFIDENCIAL.
+
+[2] AES-256-CBC + HMAC-SHA256 -> contrato_confidencial.txt.sdoc (757 bytes)
+    SHA-256          : 588a798f94271e0550bcfe89296cbb603bee4900ff25ed7823792231ed4df451
+    Entropia         : 7.68 bits/byte
+    Contém 'R$ 1.250.000'? NÃO
+   0000  53 44 4f 43 01 3b 69 74 d0 75 59 91 de 3e eb 0c  SDOC.;it.uY..>..
+   0010  21 32 34 a5 9e 11 0e 2c 14 da 6c 7e ca 50 46 ef  !24....,..l~.PF.
+   0020  76 d9 5d fd 9f aa 67 9c f5 ce 8f b3 3c 74 44 e3  v.]...g.....<tD.
+   0030  68 0d 23 01 0f 68 f5 62 a9 cc 33 ee ff a0 b9 83  h.#..h.b..3.....
+
+[3] AES-256 (decifrar) -> contrato_recuperado.txt
+    SHA-256          : 2a2a67bd95b088a2a1e2280e9cfa3269bb6dc2f5620c708dce8dc0cb95bfd8a0
+    Idêntico ao original? SIM
+
+[4] Ataque: invasor altera 1 bit do arquivo cifrado (contrato adulterado)
+    Documento RECUSADO -> Falha de integridade: arquivo adulterado ou senha incorreta.
+
+[5] Ataque: invasor tenta abrir o arquivo roubado com outra senha
+    Documento RECUSADO -> Falha de integridade: arquivo adulterado ou senha incorreta.
+
+Resultado: SUCESSO - ciclo completo verificado.

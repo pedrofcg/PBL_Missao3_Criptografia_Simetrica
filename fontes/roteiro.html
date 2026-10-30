@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Roteiro de fala – Missão 3</title>
+<style>
+  @page { size: A4; margin: 16mm 17mm; }
+  body { font-family: "Segoe UI", Calibri, Arial, sans-serif; font-size: 10.5pt; line-height: 1.45; color: #0f172a; margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  h1 { font-size: 19pt; color: #0b2545; margin: 0 0 2pt; }
+  .sub { color: #475569; margin-bottom: 10pt; }
+  .bloco { border-left: 6px solid; border-radius: 0 6px 6px 0; background: #f8fafc; padding: 8pt 12pt 6pt; margin-bottom: 10pt; page-break-inside: avoid; }
+  .bloco h2 { font-size: 13pt; margin: 0 0 2pt; }
+  .bloco .info { font-size: 9.3pt; color: #475569; margin-bottom: 5pt; }
+  .bloco p { margin: 0 0 5pt; text-align: justify; }
+  .bloco .slide { font-weight: 700; color: #0b2545; }
+  .q { font-size: 9.3pt; background: #fff; border: 1px solid #e2e8f0; border-radius: 5px; padding: 5pt 8pt; margin: 4pt 0 4pt; }
+  .q b { color: #0b2545; }
+  .a1 { border-color: #2563eb; } .a1 h2 { color: #2563eb; }
+  .a2 { border-color: #b45309; } .a2 h2 { color: #b45309; }
+  .a3 { border-color: #7c3aed; } .a3 h2 { color: #7c3aed; }
+  .a4 { border-color: #0f766e; } .a4 h2 { color: #0f766e; }
+  .a5 { border-color: #be123c; } .a5 h2 { color: #be123c; }
+  table { width: 100%; border-collapse: collapse; font-size: 9.5pt; margin-bottom: 10pt; }
+  th { background: #0b2545; color: #fff; text-align: left; padding: 4pt 6pt; }
+  td { border-bottom: 1px solid #cbd5e1; padding: 3.5pt 6pt; }
+  td:nth-child(-n+3) { white-space: nowrap; }
+  .dica { font-size: 9.3pt; color: #334155; background: #ecfeff; border: 1px solid #99f6e4; border-radius: 6px; padding: 6pt 10pt; }
+</style>
+</head>
+<body>
+<h1>Roteiro de fala: apresentação da Missão 3 (10 minutos)</h1>
+<div class="sub">SecureDocs / TechSecure · Criptografia simétrica · 5 alunos × 2 minutos (~250 palavras cada)</div>
+
+<table>
+  <tr><th>Aluno</th><th>Tempo</th><th>Slides</th><th>Tema</th><th>Passa a palavra com…</th></tr>
+  <tr><td>Aluno 1</td><td>0:00–2:00</td><td>1–4</td><td>Incidente, fundamentos, ECB × CBC</td><td>“…e o primeiro algoritmo que estudamos foi o DES.”</td></tr>
+  <tr><td>Aluno 2</td><td>2:00–4:00</td><td>5–6</td><td>DES e ataque de força bruta</td><td>“…uma alternativa mais flexível é o RC5.”</td></tr>
+  <tr><td>Aluno 3</td><td>4:00–6:00</td><td>7–8</td><td>RC5 e desempenho</td><td>“…mas o padrão mundial é o AES.”</td></tr>
+  <tr><td>Aluno 4</td><td>6:00–8:00</td><td>9–11</td><td>AES, biblioteca, experimento</td><td>“…agora vamos comparar e decidir.”</td></tr>
+  <tr><td>Aluno 5</td><td>8:00–10:00</td><td>12–14</td><td>Decisão, distribuição de chaves, conclusão</td><td>Abre para perguntas</td></tr>
+</table>
+
+<div class="bloco a1">
+  <h2>Aluno 1 · Abertura, incidente e fundamentos</h2>
+  <div class="info">Slides 1 a 4 · 0:00–2:00</div>
+  <p><span class="slide">[Slides 1–2]</span> “Boa tarde. Somos a equipe de segurança contratada pela TechSecure, e hoje apresentamos a Missão 3: milhares de documentos foram roubados. A apresentação foi dividida entre os cinco integrantes, como mostra o roteiro.”</p>
+  <p><span class="slide">[Slide 3]</span> “Um invasor copiou arquivos do servidor do SecureDocs. Eles estavam cifrados com cifras clássicas, como César e Vigenère. O problema é que essas cifras têm poucas chaves (a de César tem 25) e preservam a estatística da língua. Com análise de frequência, o invasor lê tudo. A empresa então perguntou: mesmo que roubem os arquivos, como impedir que leiam o conteúdo? A resposta é usar uma cifra simétrica moderna.”</p>
+  <p><span class="slide">[Slide 4]</span> “Na criptografia simétrica a mesma chave cifra e decifra. As cifras modernas trabalham em blocos e combinam confusão, com as S-boxes, e difusão, com as permutações, de modo que mudar um bit muda metade da saída. Mas só o algoritmo não basta: o modo de operação também importa. Esta imagem foi gerada pela nossa biblioteca. No modo ECB, o desenho do cadeado continua visível mesmo cifrado com AES. No modo CBC, vira ruído. Por isso usamos CBC com vetor de inicialização aleatório. E o primeiro algoritmo que estudamos foi o DES.”</p>
+</div>
+
+<div class="bloco a2">
+  <h2>Aluno 2 · DES e o ataque de força bruta</h2>
+  <div class="info">Slides 5 e 6 · 2:00–4:00</div>
+  <p><span class="slide">[Slide 5]</span> “O DES foi o padrão americano de 1977. Ele cifra blocos de 64 bits com uma chave de 64 bits, mas 8 são de paridade, então só 56 são efetivos. A estrutura é uma rede de Feistel com 16 rodadas: o bloco é dividido em duas metades, a metade direita passa pela função f e o resultado é combinado com a esquerda por XOR. Dentro da f há uma expansão de 32 para 48 bits, o XOR com a subchave, as 8 S-boxes, que são a única parte não linear, e uma permutação. A vantagem do Feistel é que decifrar é o mesmo circuito com as subchaves na ordem inversa. Implementamos tudo isso em Python, inclusive o 3DES.”</p>
+  <p><span class="slide">[Slide 6]</span> “Para provar que o DES é fraco, nós o atacamos. Como todo contrato começa com a palavra ‘CONTRATO’, o invasor tem um texto conhecido. Deixamos 14 bits da chave desconhecidos e nosso script encontrou a chave em 3 segundos, testando cerca de 3.800 chaves por segundo. Extrapolando para os 56 bits, uma máquina dedicada como a Deep Crack de 1998 leva 4,6 dias em média, e um cluster de GPUs atual, umas 10 horas. Em 1999 o DES foi quebrado em 22 horas. Já o AES, com a mesma velocidade, levaria 10<sup>57</sup> anos. O DES está descartado, e o 3DES também, porque foi proibido pelo NIST desde 2024. Uma alternativa mais flexível é o RC5.”</p>
+</div>
+
+<div class="bloco a3">
+  <h2>Aluno 3 · RC5 e desempenho</h2>
+  <div class="info">Slides 7 e 8 · 4:00–6:00</div>
+  <p><span class="slide">[Slide 7]</span> “O RC5 foi criado por Ron Rivest em 1994. A grande característica dele é ser parametrizável: escolhemos o tamanho da palavra, o número de rodadas e o tamanho da chave. A versão de referência é a RC5-32/12/16, com bloco de 64 bits, 12 rodadas e chave de 128 bits. Ele usa só três operações: soma, XOR e rotação. O detalhe genial é que a rotação depende dos próprios dados. Isso dá a não linearidade sem precisar de S-boxes. A chave é expandida em uma tabela S, iniciada com constantes derivadas dos números e e φ. Nossa implementação aceita palavras de 16, 32 e 64 bits e passou nos vetores de teste originais do Rivest.”</p>
+  <p><span class="slide">[Slide 8]</span> “O RC5 é curto e rápido. Na nossa medição em Python ele foi o mais rápido, com 705 KB/s contra 316 do AES-128. Mas tem problemas sérios: com 12 rodadas ele é vulnerável a um ataque diferencial com 2<sup>44</sup> textos escolhidos, o bloco de 64 bits tem o mesmo limite do DES, ele nunca foi padronizado pelo NIST e não tem aceleração em hardware. E em processadores reais o AES, com as instruções AES-NI, chega a vários gigabytes por segundo. O padrão mundial é o AES.”</p>
+</div>
+
+<div class="bloco a4">
+  <h2>Aluno 4 · AES, biblioteca e experimento</h2>
+  <div class="info">Slides 9 a 11 · 6:00–8:00</div>
+  <p><span class="slide">[Slide 9]</span> “O AES venceu um concurso público do NIST e é padrão desde 2001. O bloco é de 128 bits, organizado em uma matriz 4×4 de bytes, e a chave pode ter 128, 192 ou 256 bits, com 10, 12 ou 14 rodadas. Cada rodada tem quatro etapas: SubBytes, que dá a confusão; ShiftRows e MixColumns, que dão a difusão; e AddRoundKey, que mistura a chave. Na nossa implementação a S-box não foi copiada: ela é calculada no código com aritmética no corpo GF(2<sup>8</sup>). Depois de 25 anos, o melhor ataque só reduz o AES-128 de 2<sup>128</sup> para 2<sup>126</sup>, sem efeito prático.”</p>
+  <p><span class="slide">[Slide 10]</span> “Tudo isso virou a biblioteca securedocs_crypto, em Python puro e sem dependências. Ela tem DES, 3DES, RC5, AES, os modos ECB, CBC e CTR, e cifragem de arquivos. Para provar que está correta, criamos 18 testes com os vetores oficiais do NIST e do Rivest, e todos passaram.”</p>
+  <p><span class="slide">[Slide 11]</span> “Este é o experimento pedido. Pegamos um contrato, ciframos com AES-256 e o arquivo virou bytes ilegíveis: o valor do contrato não aparece em lugar nenhum. Ao decifrar, o hash SHA-256 é idêntico ao original. Também incluímos um código de integridade HMAC: se o invasor alterar um único bit, o SecureDocs recusa o arquivo, o que resolve o caso do contrato adulterado. Agora vamos comparar e decidir.”</p>
+</div>
+
+<div class="bloco a5">
+  <h2>Aluno 5 · Decisão, distribuição de chaves e conclusão</h2>
+  <div class="info">Slides 12 a 14 · 8:00–10:00</div>
+  <p><span class="slide">[Slide 12]</span> “Colocando lado a lado: o DES tem chave de 56 bits e cai em horas. O RC5 tem ataque conhecido e não é padronizado. O AES tem bloco de 128 bits, chave de até 256 e nenhum ataque prático. Nossa escolha é o AES-256, porque ele protege também contra o futuro: um computador quântico, com o algoritmo de Grover, reduziria a segurança à metade, e o AES-256 ainda manteria 128 bits. Em produção, usaríamos o modo AES-256-GCM de uma biblioteca auditada.”</p>
+  <p><span class="slide">[Slide 13]</span> “Mas descobrimos um novo problema: como entregar a chave ao destinatário? Se ela for pela Internet, o invasor também a pega. E com 1.200 usuários seriam necessárias 720 mil chaves. Estudamos canais alternativos, servidores de chaves como o Kerberos e o Diffie-Hellman. Nossa resposta é o envelope digital: o documento é cifrado com uma chave AES aleatória, e essa chave é cifrada com a chave pública do destinatário. Só quem tem a chave privada abre. Certificados digitais evitam o ataque do homem do meio, e a troca híbrida X25519 com ML-KEM protege contra computadores quânticos.”</p>
+  <p><span class="slide">[Slide 14]</span> “Concluindo: as cifras clássicas e o DES não protegem mais, e o modo de operação importa tanto quanto o algoritmo. Entregamos uma biblioteca testada e a cifragem de arquivos com AES-256. Nas próximas missões, com criptografia assimétrica, hash e assinatura digital, vamos completar a arquitetura do SecureDocs. Obrigado! Ficamos à disposição para perguntas.”</p>
+</div>
+
+<h2 style="font-size:13pt;color:#0b2545;margin:12pt 0 4pt">Perguntas prováveis e respostas curtas</h2>
+<div class="q"><b>Por que não usar o 3DES, se ele tem 112 bits?</b> É 3× mais lento que o DES, usa bloco de 64 bits (vulnerável ao Sweet32 após ~32 GB) e o NIST proibiu seu uso para cifrar dados desde 2024.</div>
+<div class="q"><b>Por que AES-256 e não AES-128?</b> O AES-128 é seguro hoje, mas contratos podem precisar de sigilo por décadas. Contra o algoritmo de Grover (computação quântica), o AES-256 mantém 128 bits de segurança. O custo extra é só 4 rodadas (14 contra 10).</div>
+<div class="q"><b>Qual a diferença entre CBC e GCM?</b> O CBC só garante confidencialidade, por isso adicionamos o HMAC. O GCM é um modo AEAD: cifra e autentica ao mesmo tempo e é mais rápido. Em produção usaríamos o GCM.</div>
+<div class="q"><b>Por que a biblioteca não deve ir para produção?</b> Python puro é lento e não é protegido contra ataques de canal lateral (tempo de execução e cache). Ela serve para estudo; em produção usam-se bibliotecas auditadas como <i>cryptography</i> ou OpenSSL.</div>
+<div class="q"><b>O que é o salt no PBKDF2?</b> É um valor aleatório que entra na derivação da chave a partir da senha. Ele faz a mesma senha gerar chaves diferentes e impede tabelas pré-calculadas. As 200 mil iterações deixam lentos os ataques de dicionário.</div>
+<div class="q"><b>O Diffie-Hellman sozinho resolve a distribuição de chaves?</b> Não. Sem autenticação, um atacante no meio pode fazer uma troca com cada lado. Por isso ele é combinado com certificados e assinaturas digitais, como no TLS 1.3.</div>
+
+<div class="dica" style="margin-top:8pt"><b>Dicas:</b> ensaiem com cronômetro (2 minutos cada); não leiam os slides, usem este roteiro como guia; se der tempo, rodem ao vivo <code>python exemplos/demo_aes_arquivo.py</code> na pasta <code>biblioteca</code> durante o slide 11.</div>
+</body>
+</html>

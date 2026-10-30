@@ -1,0 +1,31 @@
+========================================================================
+ ATAQUE DE FORÇA BRUTA AO DES (texto conhecido)
+========================================================================
+ Texto conhecido : b'CONTRATO'
+ Bloco cifrado   : 1E7CBDC0203B5A6A
+ Bits procurados : 14 (16,384 chaves)
+
+ Chave encontrada: 133457799BBCBC6E  (real: 133457799BBCBC6E)
+ Chaves testadas : 12,088 em 3.16 s -> 3,823 chaves/s (Python puro)
+
+ Tempo MÉDIO estimado para achar a chave (metade do espaço):
+
+  Este notebook (Python puro) - 3,823 chaves/s
+    DES (2^56)       : 2.99e+05 anos
+    3DES (2^112)     : 2.15e+22 anos
+    AES-128 (2^128)  : 1.41e+27 anos
+    AES-256 (2^256)  : 4.80e+65 anos
+
+  Deep Crack, EFF - 1998 - 90,000,000,000 chaves/s
+    DES (2^56)       : 4.6 dias
+    3DES (2^112)     : 9.14e+14 anos
+    AES-128 (2^128)  : 5.99e+19 anos
+    AES-256 (2^256)  : 2.04e+58 anos
+
+  Cluster de GPUs atual (estimativa) - 1,000,000,000,000 chaves/s
+    DES (2^56)       : 10.0 horas
+    3DES (2^112)     : 8.23e+13 anos
+    AES-128 (2^128)  : 5.39e+18 anos
+    AES-256 (2^256)  : 1.83e+57 anos
+
+ Conclusão: o DES cai em horas com hardware dedicado; o AES é inviável.

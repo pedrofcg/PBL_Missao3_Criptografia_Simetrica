@@ -1,0 +1,4 @@
+Blocos de texto: 288 (2 distintos)
+Blocos ECB distintos: 2  -> padrão preservado
+Blocos CBC distintos: 288  -> padrão destruído
+Imagem gerada: C:\Users\pedro\OneDrive\Área de Trabalho\PBL_Missao3_Criptografia_Simetrica\biblioteca\exemplos\saida\ecb_vs_cbc.svg

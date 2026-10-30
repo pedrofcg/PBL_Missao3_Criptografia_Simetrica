@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Apresentação – Missão 3 – SecureDocs</title>
+<style>
+  @page { size: 1280px 720px; margin: 0; }
+  :root { --azul:#0b2545; --azul2:#13315c; --teal:#0f766e; --teal2:#14b8a6; --cinza:#475569; --claro:#f1f5f9; --borda:#cbd5e1; --verm:#b91c1c; --verde:#15803d;
+          --a1:#2563eb; --a2:#b45309; --a3:#7c3aed; --a4:#0f766e; --a5:#be123c; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #fff; }
+  body { font-family: "Segoe UI", Calibri, Arial, sans-serif; color: #0f172a; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .slide { width: 1280px; height: 720px; position: relative; overflow: hidden; page-break-after: always; padding: 92px 64px 56px; background: #fff; }
+  .slide:last-child { page-break-after: auto; }
+  .slide:not(.capa) > :not(.topo):not(.rodape) { zoom: 1.25; }
+  .slide.z-menor > :not(.topo):not(.rodape) { zoom: 1.1; }
+  .topo { position: absolute; left: 0; top: 0; right: 0; height: 72px; background: var(--azul); display: flex; align-items: center; padding: 0 64px; }
+  .topo h2 { color: #fff; font-size: 30px; font-weight: 600; letter-spacing: .2px; }
+  .aluno { position: absolute; right: 40px; top: 18px; color: #fff; font-size: 15px; font-weight: 600; padding: 7px 14px; border-radius: 18px; }
+  .rodape { position: absolute; left: 64px; right: 40px; bottom: 18px; display: flex; justify-content: space-between; font-size: 13px; color: #94a3b8; }
+  .a1 { background: var(--a1); } .a2 { background: var(--a2); } .a3 { background: var(--a3); } .a4 { background: var(--a4); } .a5 { background: var(--a5); }
+  .c-a1 { color: var(--a1); } .c-a2 { color: var(--a2); } .c-a3 { color: var(--a3); } .c-a4 { color: var(--a4); } .c-a5 { color: var(--a5); }
+  p, li { font-size: 21px; line-height: 1.42; }
+  ul { padding-left: 26px; } li { margin-bottom: 8px; }
+  b { color: var(--azul); }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .cols-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .card { background: var(--claro); border-radius: 12px; padding: 18px 20px; border-top: 5px solid var(--teal); }
+  .card h3 { font-size: 21px; color: var(--azul); margin-bottom: 8px; }
+  .card p, .card li { font-size: 17.5px; line-height: 1.4; }
+  .card.verm { border-top-color: var(--verm); background: #fef2f2; }
+  .card.verde { border-top-color: var(--verde); background: #f0fdf4; }
+  .destaque { background: var(--claro); border-left: 6px solid var(--teal); padding: 16px 22px; border-radius: 0 10px 10px 0; font-size: 22px; line-height: 1.4; }
+  .destaque.verm { border-left-color: var(--verm); background: #fef2f2; }
+  .destaque.verde { border-left-color: var(--verde); background: #f0fdf4; }
+  .mono, code { font-family: Consolas, "Cascadia Mono", monospace; }
+  pre { font-family: Consolas, monospace; background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 16px 20px; font-size: 16.5px; line-height: 1.45; white-space: pre-wrap; }
+  pre .ok { color: #4ade80; font-weight: 700; } pre .no { color: #f87171; font-weight: 700; } pre .dim { color: #94a3b8; }
+  table { width: 100%; border-collapse: collapse; font-size: 18px; }
+  th { background: var(--azul); color: #fff; padding: 9px 12px; text-align: left; font-weight: 600; }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--borda); }
+  tr:nth-child(even) td { background: #f8fafc; }
+  .bad { color: var(--verm); font-weight: 700; } .good { color: var(--verde); font-weight: 700; }
+  .grande { font-size: 56px; font-weight: 800; color: var(--azul); line-height: 1; }
+  .legenda { font-size: 15px; color: var(--cinza); }
+  .formula { font-family: Cambria, "Times New Roman", serif; font-size: 26px; text-align: center; color: var(--azul); margin: 6px 0 14px; }
+
+  /* capa */
+  .capa { background: linear-gradient(135deg, #0b2545 0%, #13315c 55%, #0f766e 100%); color: #fff; padding: 0 90px; display: flex; flex-direction: column; justify-content: center; }
+  .capa .tag { font-size: 18px; letter-spacing: 3px; text-transform: uppercase; color: #99f6e4; margin-bottom: 18px; }
+  .capa h1 { font-size: 58px; line-height: 1.12; font-weight: 800; margin-bottom: 18px; }
+  .capa .sub { font-size: 26px; color: #cbd5e1; margin-bottom: 44px; }
+  .capa .equipe { display: flex; gap: 14px; flex-wrap: wrap; }
+  .capa .equipe span { font-size: 17px; padding: 8px 16px; border-radius: 20px; font-weight: 600; }
+  .capa .rodape { color: #94a3b8; }
+
+  /* barras */
+  .barras { display: grid; grid-template-columns: 150px 1fr 70px; row-gap: 12px; column-gap: 12px; align-items: center; font-size: 17px; }
+  .barras .trilho { height: 22px; position: relative; border-bottom: 1px solid #e2e8f0; }
+  .barras .bar { position: absolute; left: 0; top: 2px; height: 18px; background: #5eaaa2; border-radius: 0 4px 4px 0; }
+  .barras .bar.forte { background: var(--teal); }
+  .barras .v { color: var(--cinza); text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* fluxo */
+  .fluxo { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 6px 0 22px; }
+  .fluxo .no { white-space: nowrap; padding: 14px 16px; border-radius: 10px; font-size: 19px; font-weight: 600; text-align: center; }
+  .fluxo .arq { background: #fff; border: 2px solid var(--azul); color: var(--azul); }
+  .fluxo .alg { background: var(--azul); color: #fff; }
+  .fluxo .cif { background: #1e293b; color: #e2e8f0; font-family: Consolas, monospace; font-size: 15px; }
+  .fluxo .seta { font-size: 28px; color: var(--teal); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<!-- 1. CAPA -->
+<section class="slide capa">
+  <div class="tag">PBL · SecureDocs · TechSecure</div>
+  <h1>Missão 3<br>Milhares de documentos foram roubados</h1>
+  <div class="sub">Criptografia simétrica: DES, RC5 e AES. Qual usar no SecureDocs?</div>
+  <div class="equipe">
+    <span class="a1">Aluno 1</span><span class="a2">Aluno 2</span><span class="a3">Aluno 3</span><span class="a4">Aluno 4</span><span class="a5">Aluno 5</span>
+  </div>
+  <div class="rodape"><span>Equipe de Especialistas em Segurança e Criptografia</span><span>Outubro de 2026</span></div>
+</section>
+
+<!-- 2. DIVISÃO -->
+<section class="slide z-menor">
+  <div class="topo"><h2>Roteiro da apresentação (10 minutos)</h2></div>
+  <table style="margin-top:14px">
+    <tr><th style="width:16%">Quem</th><th style="width:16%">Tempo</th><th style="width:16%">Slides</th><th>Conteúdo</th></tr>
+    <tr><td><b class="c-a1">Aluno 1</b></td><td>0:00 – 2:00</td><td>1 – 4</td><td>O incidente, por que as cifras clássicas falharam, fundamentos e modos de operação</td></tr>
+    <tr><td><b class="c-a2">Aluno 2</b></td><td>2:00 – 4:00</td><td>5 – 6</td><td>DES: estrutura de Feistel e o nosso ataque de força bruta</td></tr>
+    <tr><td><b class="c-a3">Aluno 3</b></td><td>4:00 – 6:00</td><td>7 – 8</td><td>RC5: rotações dependentes dos dados, fraquezas e desempenho comparado</td></tr>
+    <tr><td><b class="c-a4">Aluno 4</b></td><td>6:00 – 8:00</td><td>9 – 11</td><td>AES, a biblioteca <code>securedocs_crypto</code> e o experimento com arquivo</td></tr>
+    <tr><td><b class="c-a5">Aluno 5</b></td><td>8:00 – 10:00</td><td>12 – 14</td><td>Comparativo, escolha do algoritmo, distribuição de chaves e conclusão</td></tr>
+  </table>
+  <div class="destaque" style="margin-top:28px">Produtos da missão: <b>resumo escrito</b> + <b>biblioteca Python</b> (DES, RC5, AES, 18 testes) + <b>esta apresentação</b>.</div>
+  <div class="rodape"><span>SecureDocs · Missão 3</span><span>2</span></div>
+</section>
+
+<!-- 3. INCIDENTE -->
+<section class="slide">
+  <div class="topo"><h2>O incidente: os arquivos foram copiados</h2><span class="aluno a1">Aluno 1 · 0:00–2:00</span></div>
+  <div class="cols">
+    <div>
+      <p style="margin-bottom:14px">Um invasor copiou arquivos do servidor do SecureDocs, cifrados com <b>cifras clássicas</b> (César, Vigenère, transposição).</p>
+      <ul>
+        <li><b>Espaço de chaves minúsculo:</b> a cifra de César tem só 25 chaves, que se testam em milissegundos.</li>
+        <li><b>Estatística preservada:</b> a letra mais frequente do cifrado provavelmente é o “A” ou o “E”, e a análise de frequência revela o texto.</li>
+        <li><b>Padrões repetidos</b> denunciam o tamanho da chave (Kasiski) no Vigenère.</li>
+      </ul>
+    </div>
+    <div>
+      <div class="destaque verm" style="margin-bottom:22px"><i>“Mesmo que um invasor consiga copiar nossos arquivos, como impedir que ele conheça seus conteúdos?”</i><br><span class="legenda">Diretoria da TechSecure</span></div>
+      <div class="card"><h3>Nossa resposta</h3><p>Cifrar todos os documentos em repouso com uma <b>cifra simétrica moderna</b>, com chave grande e resistente à criptoanálise. Assim, o arquivo roubado vira ruído inútil para o invasor.</p></div>
+    </div>
+  </div>
+  <div class="rodape"><span>SecureDocs · Missão 3</span><span>3</span></div>
+</section>
+
+<!-- 4. FUNDAMENTOS -->
+<section class="slide">
+  <div class="topo"><h2>Criptografia simétrica e modos de operação</h2><span class="aluno a1">Aluno 1 · 0:00–2:00</span></div>
+  <div class="cols" style="grid-template-columns: 0.9fr 1.1fr; gap:34px">
+    <div>
+      <div class="formula">C = E<sub>K</sub>(P) &nbsp;&nbsp; P = D<sub>K</sub>(C)</div>
+      <ul>
+        <li>A <b>mesma chave</b> cifra e decifra.</li>
+        <li><b>Cifra de bloco:</b> blocos fixos de 64 ou 128 bits.</li>
+        <li><b>Confusão</b> (S-boxes) + <b>difusão</b> (permutações): 1 bit alterado muda cerca de 50% da saída.</li>
+        <li><b>Modo de operação</b> para arquivos grandes: ECB, CBC, CTR, GCM.</li>
+      </ul>
+    </div>
+    <div>
+      <img src="../biblioteca/exemplos/saida/ecb_vs_cbc.svg" style="width:100%; margin-top:6px">
+      <p class="legenda" style="margin-top:10px">Saída real de <code>demo_ecb_vs_cbc.py</code> (288 blocos, AES). No <b>ECB</b>, blocos iguais geram cifrados iguais e o cadeado continua visível (2 blocos distintos). No <b>CBC</b>, com IV aleatório, os 288 blocos são distintos.</p>
+      <div class="destaque verm" style="font-size:18px; margin-top:12px">Lição: um algoritmo forte em um modo errado ainda vaza informação.</div>
+    </div>
+  </div>
+  <div class="rodape"><span>SecureDocs · Missão 3</span><span>4</span></div>
+</section>
+
+<!-- 5. DES -->
+<section class="slide z-menor">
+  <div class="topo"><h2>DES: Data Encryption Standard (1977)</h2><span class="aluno a2">Aluno 2 · 2:00–4:00</span></div>
+  <div class="cols" style="grid-template-columns: 1.05fr 0.95fr">
+    <div>
+      <ul>
+        <li>Bloco de <b>64 bits</b>; chave de 64 bits, mas só <b class="bad">56 efetivos</b>.</li>
+        <li><b>16 rodadas de Feistel</b>: L<sub>i</sub> = R<sub>i−1</sub>; &nbsp;R<sub>i</sub> = L<sub>i−1</sub> ⊕ f(R<sub>i−1</sub>, K<sub>i</sub>).</li>
+        <li><b>Função f:</b> expansão E (32 → 48), XOR com a subchave, <b>8 S-boxes</b> (6 → 4 bits, a única parte não linear) e permutação P.</li>
+        <li><b>Subchaves:</b> PC-1 (56 bits), rotações de 1 ou 2 bits, PC-2 (48 bits).</li>
+        <li><b>Decifrar</b> = mesmo circuito com as subchaves invertidas.</li>
+      </ul>
+      <p class="legenda" style="margin-top:8px">Na nossa implementação (<code>des.py</code>), uma única função <code>_permutar()</code> aplica todas as tabelas do FIPS 46-3. Também implementamos o 3DES-EDE.</p>
+    </div>
+    <div>
+      <svg viewBox="0 0 440 380" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial" style="width:100%">
+        <defs><marker id="m2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker></defs>
+        <rect x="40" y="10" width="140" height="44" rx="8" fill="#fff" stroke="#0b2545" stroke-width="2"/><text x="110" y="38" text-anchor="middle" font-size="19" font-weight="600" fill="#0b2545">L<tspan baseline-shift="sub" font-size="13">i−1</tspan> (32)</text>
+        <rect x="260" y="10" width="140" height="44" rx="8" fill="#fff" stroke="#0b2545" stroke-width="2"/><text x="330" y="38" text-anchor="middle" font-size="19" font-weight="600" fill="#0b2545">R<tspan baseline-shift="sub" font-size="13">i−1</tspan> (32)</text>
+        <rect x="245" y="120" width="170" height="104" rx="10" fill="#b45309"/>
+        <text x="330" y="146" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">f(R, K<tspan baseline-shift="sub" font-size="12">i</tspan>)</text>
+        <text x="330" y="170" text-anchor="middle" font-size="14" fill="#fff">E: 32→48  ⊕ K<tspan baseline-shift="sub" font-size="10">i</tspan></text>
+        <text x="330" y="190" text-anchor="middle" font-size="14" fill="#fff">8 S-boxes: 48→32</text>
+        <text x="330" y="210" text-anchor="middle" font-size="14" fill="#fff">Permutação P</text>
+        <line x1="330" y1="54" x2="330" y2="118" stroke="#334155" stroke-width="2" marker-end="url(#m2)"/>
+        <circle cx="110" cy="172" r="18" fill="#fff" stroke="#334155" stroke-width="2"/><text x="110" y="179" text-anchor="middle" font-size="22" fill="#334155">⊕</text>
+        <line x1="110" y1="54" x2="110" y2="152" stroke="#334155" stroke-width="2" marker-end="url(#m2)"/>
+        <line x1="245" y1="172" x2="130" y2="172" stroke="#334155" stroke-width="2" marker-end="url(#m2)"/>
+        <line x1="110" y1="190" x2="320" y2="300" stroke="#334155" stroke-width="2" marker-end="url(#m2)"/>
+        <path d="M330 86 L 180 86 L 120 296" fill="none" stroke="#334155" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#m2)"/>
+        <rect x="40" y="302" width="140" height="44" rx="8" fill="#fff" stroke="#0b2545" stroke-width="2"/><text x="110" y="330" text-anchor="middle" font-size="19" font-weight="600" fill="#0b2545">L<tspan baseline-shift="sub" font-size="13">i</tspan> = R<tspan baseline-shift="sub" font-size="13">i−1</tspan></text>
+        <rect x="260" y="302" width="140" height="44" rx="8" fill="#fff" stroke="#0b2545" stroke-width="2"/><text x="330" y="330" text-anchor="middle" font-size="19" font-weight="600" fill="#0b2545">R<tspan baseline-shift="sub" font-size="13">i</tspan></text>
+        <text x="220" y="372" text-anchor="middle" font-size="15" fill="#475569">uma rodada de Feistel (×16)</text>
+      </svg>
+    </div>
+  </div>
+  <div class="rodape"><span>SecureDocs · Missão 3</span><span>5</span></div>
+</section>
+
+<!-- 6. DES QUEBRADO -->
+<section class="slide">
+  <div class="topo"><h2>Atacamos o DES: força bruta na prática</h2><span class="aluno a2">Aluno 2 · 2:00–4:00</span></div>
+  <div class="cols" style="grid-template-columns: 0.85fr 1.15fr; gap:34px">
+    <div>
+      <pre><span class="dim">$ python exemplos/ataque_forca_bruta_des.py</span>
+Texto conhecido : b'CONTRATO'
+Bits procurados : 14 (16,384 chaves)
+
+Chave encontrada: 133457799BBCBC6E
+Chaves testadas : 12,088 em 3.16 s
+                  <span class="ok">3,823 chaves/s</span></pre>
+      <p style="font-size:18px; margin-top:14px">Todo contrato começa com “CONTRATO”: esse <b>texto conhecido</b> basta para testar chaves.</p>
+    </div>
+    <div>
+      <p style="font-size:18px; margin-bottom:10px"><b>Tempo médio para achar a chave completa:</b></p>
+      <table style="font-size:17px">
+        <tr><th>Atacante</th><th>DES 2<sup>56</sup></th><th>AES-128</th><th>AES-256</th></tr>
+        <tr><td>Nosso notebook</td><td>3·10<sup>5</sup> anos</td><td>10<sup>27</sup> anos</td><td>10<sup>65</sup> anos</td></tr>
+        <tr><td>Deep Crack (1998)</td><td class="bad">4,6 dias</td><td>10<sup>19</sup> anos</td><td>10<sup>58</sup> anos</td></tr>
+        <tr><td>Cluster de GPUs</td><td class="bad">10 horas</td><td>10<sup>18</sup> anos</td><td>10<sup>57</sup> anos</td></tr>
+      </table>
+      <div class="destaque verm" style="margin-top:18px; font-size:19px"><b>Histórico:</b> o DES foi quebrado em 56 h (EFF, 1998) e em 22 h (1999). O 3DES (112 bits) é 3× mais lento, tem bloco de 64 bits (ataque Sweet32) e foi proibido pelo NIST para novos dados desde 2024.</div>
+    </div>
+  </div>
+  <div class="rodape"><span>SecureDocs · Missão 3</span><span>6</span></div>
+</section>
+
+<!-- 7. RC5 -->
+<section class="slide">
+  <div class="topo"><h2>RC5: simples e parametrizável (Rivest, 1994)</h2><span class="aluno a3">Aluno 3 · 4:00–6:00</span></div>
+  <div class="cols">
+    <div>
+      <ul>
+        <li><b>RC5-w/r/b:</b> palavra de <i>w</i> bits (16, 32, 64), <i>r</i> rodadas, chave de <i>b</i> bytes.</li>
+        <li>Referência: <b>RC5-32/12/16</b>, com bloco de 64 bits e chave de 128 bits.</li>
+        <li>Só 3 operações: <b>soma</b>, <b>XOR</b> e <b>rotação</b>.</li>
+        <li>A rotação é <b>dependente dos dados</b>: o próprio texto define quantas posições girar, sem S-boxes.</li>
+        <li><b>Expansão de chave:</b> tabela S iniciada com as constantes P = Odd((e−2)·2<sup>w</sup>) e Q = Odd((φ−1)·2<sup>w</sup>) e misturada com a chave em 3·max(t, c) passos.</li>
+      </ul>
+    </div>
+    <div>
+      <pre><span class="dim"># cifragem (rc5.py)</span>
+A = A + S[0]
+B = B + S[1]
+for i in 1..r:
+    A = ((A ^ B) <span class="ok">&lt;&lt;&lt; B</span>) + S[2i]
+    B = ((B ^ A) <span class="ok">&lt;&lt;&lt; A</span>) + S[2i+1]
+
+<span class="dim"># decifragem: tudo ao contrário</span>
+    B = ((B - S[2i+1]) &gt;&gt;&gt; A) ^ A
+    A = ((A - S[2i])   &gt;&gt;&gt; B) ^ B</pre>
+      <p class="legenda" style="margin-top:10px">Nossa classe aceita w = 16, 32 ou 64 e qualquer número de rodadas. Ela foi validada com os vetores originais de Rivest (ex.: chave 0 → <span class="mono">21A5DBEE154B8F6D</span>).</p>
+    </div>
+  </div>
+  <div class="rodape"><span>SecureDocs · Missão 3</span><span>7</span></div>
+</section>
+
+<!-- 8. RC5 avaliação + desempenho -->
+<section class="slide">
+  <div class="topo"><h2>RC5: pontos fortes, fracos e desempenho medido</h2><span class="aluno a3">Aluno 3 · 4:00–6:00</span></div>
+  <div class="cols" style="grid-template-columns: 1fr 1.05fr; gap:34px">
+    <div>
+      <div class="card verde" style="margin-bottom:16px"><h3>Pontos fortes</h3><ul><li>Código curto e rápido em software</li><li>Chave de até 2040 bits</li></ul></div>
+      <div class="card verm"><h3>Pontos fracos</h3><ul>
+        <li>Com 12 rodadas, cai em ataque diferencial com 2<sup>44</sup> textos escolhidos</li>
+        <li>Bloco de 64 bits (mesmo limite do DES)</li>
+        <li>Não é padrão NIST e não tem aceleração em hardware</li>
+      </ul></div>
+    </div>
+    <div>
+      <p style="font-size:19px; margin-bottom:4px"><b>Vazão de cifragem, modo CBC</b> <span class="legenda">(KB/s, Python puro, 32 KB)</span></p>
+      <p class="legenda" style="margin-bottom:16px">Saída de <code>comparativo_desempenho.py</code></p>
+      <div class="barras">
+        <span>RC5-32/12/16</span><div class="trilho"><div class="bar" style="width:100%"></div></div><span class="v">705</span>
+        <span>AES-128</span><div class="trilho"><div class="bar forte" style="width:44.8%"></div></div><span class="v">316</span>
+        <span>AES-256</span><div class="trilho"><div class="bar forte" style="width:37.8%"></div></div><span class="v">267</span>
+        <span>DES</span><div class="trilho"><div class="bar" style="width:6.7%"></div></div><span class="v">47</span>
+        <span>3DES</span><div class="trilho"><div class="bar" style="width:2.1%"></div></div><span class="v">15</span>
+      </div>
+      <div class="destaque" style="margin-top:22px; font-size:18px">O RC5 é o mais rápido <b>em Python puro</b>. Em processadores reais, as instruções <b>AES-NI</b> cifram AES a vários GB/s.</div>
+    </div>
+  </div>
+  <div class="rodape"><span>SecureDocs · Missão 3</span><span>8</span></div>
+</section>
+
+<!-- 9. AES -->
+<section class="slide">
+  <div class="topo"><h2>AES: Advanced Encryption Standard (FIPS 197, 2001)</h2><span class="aluno a4">Aluno 4 · 6:00–8:00</span></div>
+  <p style="margin-bottom:18px">Bloco de <b>128 bits</b> organizado como uma matriz 4×4 de bytes (o <b>estado</b>). Chaves de <b>128, 192 ou 256 bits</b> → <b>10, 12 ou 14 rodadas</b>. Rede de substituição-permutação sobre o corpo GF(2<sup>8</sup>).</p>
+  <div class="cols-4">
+    <div class="card"><h3>1 · SubBytes</h3><p>Cada byte passa pela S-box: inverso em GF(2<sup>8</sup>) + transformação afim. Gera a <b>confusão</b>.</p></div>
+    <div class="card"><h3>2 · ShiftRows</h3><p>A linha <i>r</i> gira <i>r</i> posições, misturando as colunas.</p></div>
+    <div class="card"><h3>3 · MixColumns</h3><p>Cada coluna é multiplicada pela matriz [02 03 01 01] em GF(2<sup>8</sup>). Gera a <b>difusão</b>.</p></div>
+    <div class="card"><h3>4 · AddRoundKey</h3><p>XOR com a chave da rodada, gerada por RotWord, SubWord e Rcon.</p></div>
+  </div>
+  <div class="cols" style="margin-top:22px; gap:22px">
+    <div class="destaque" style="font-size:18.5px">Na nossa implementação (<code>aes.py</code>), a <b>S-box não foi copiada de uma tabela</b>: ela é <b>calculada</b> no código, a partir do inverso a<sup>254</sup> e da transformação afim.</div>
+    <div class="destaque verde" style="font-size:18.5px"><b>Melhor ataque:</b> biclique, que reduz o AES-128 de 2<sup>128</sup> para 2<sup>126,1</sup> (sem efeito prático). Com o algoritmo quântico de Grover, o AES-256 ainda mantém 2<sup>128</sup>.</div>
+  </div>
+  <div class="rodape"><span>SecureDocs · Missão 3</span><span>9</span></div>
+</section>
+
+<!-- 10. BIBLIOTECA -->
+<section class="slide">
+  <div class="topo"><h2>Biblioteca securedocs_crypto (Python puro)</h2><span class="aluno a4">Aluno 4 · 6:00–8:00</span></div>
+  <div class="cols" style="grid-template-columns: 1fr 1fr; gap:34px">
+    <pre style="font-size:15.5px">securedocs_crypto/
+  des.py      <span class="dim">DES + 3DES</span>
+  rc5.py      <span class="dim">RC5-w/r/b</span>
+  aes.py      <span class="dim">AES-128/192/256</span>
+  modos.py    <span class="dim">ECB, CBC, CTR, PKCS#7</span>
+  arquivo.py  <span class="dim">AES-256 + HMAC + PBKDF2</span>
+tests/test_vetores.py   <span class="dim">18 testes</span>
+exemplos/               <span class="dim">4 demonstrações</span>
+
+<span class="dim">$ python -m unittest discover -s tests</span>
+Ran 18 tests in 1.508s
+<span class="ok">OK</span></pre>
+    <div>
+      <p style="font-size:19px; margin-bottom:10px"><b>Validada com vetores oficiais:</b></p>
+      <table style="font-size:16px">
+        <tr><th>Algoritmo</th><th>Fonte</th><th>Resultado</th></tr>
+        <tr><td>DES</td><td>FIPS 46 / SP 800-17</td><td class="good">85E81354… ✓</td></tr>
+        <tr><td>RC5-32/12/16</td><td>Rivest 1994 (3 vetores)</td><td class="good">21A5DBEE… ✓</td></tr>
+        <tr><td>AES-128/192/256</td><td>FIPS 197, ap. C</td><td class="good">69C4E0D8… ✓</td></tr>
+        <tr><td>AES-CBC / CTR</td><td>NIST SP 800-38A</td><td class="good">7649ABAC… ✓</td></tr>
+      </table>
+      <pre style="font-size:15px; margin-top:16px">cifra = AES(chave_32_bytes)
+iv, c = cbc_encrypt(cifra, dados)
+cbc_decrypt(cifra, iv, c) == dados  <span class="ok"># True</span></pre>
+    </div>
+  </div>
+  <div class="rodape"><span>SecureDocs · Missão 3</span><span>10</span></div>
+</section>
+
+<!-- 11. EXPERIMENTO -->
+<section class="slide">
+  <div class="topo"><h2>Experimento: arquivo cifrado e recuperado com AES</h2><span class="aluno a4">Aluno 4 · 6:00–8:00</span></div>
+  <div class="fluxo">
+    <div class="no arq">contrato.txt<br><span style="font-size:14px;font-weight:400">681 B · legível</span></div><span class="seta">→</span>
+    <div class="no alg">AES-256</div><span class="seta">→</span>
+    <div class="no cif">contrato.txt.sdoc<br>3b 69 74 d0 75 59…</div><span class="seta">→</span>
+    <div class="no alg">AES-256</div><span class="seta">→</span>
+    <div class="no arq">contrato_recuperado.txt<br><span style="font-size:14px;font-weight:400">681 B · idêntico</span></div>
+  </div>
+  <pre style="font-size:15.5px">SHA-256 original   : 2a2a67bd95b088a2a1e2280e9cfa3269bb6dc2f5620c708dce8dc0cb95bfd8a0
+SHA-256 recuperado : 2a2a67bd95b088a2a1e2280e9cfa3269bb6dc2f5620c708dce8dc0cb95bfd8a0  <span class="ok">IDÊNTICO</span>
+Entropia: 5.12 → 7.68 bits/byte      Contém 'R$ 1.250.000' no cifrado? <span class="ok">NÃO</span>
+
+Invasor altera 1 bit do arquivo cifrado  → <span class="no">RECUSADO</span>: falha de integridade (HMAC)
+Invasor tenta outra senha                → <span class="no">RECUSADO</span></pre>
+  <p style="font-size:17.5px; margin-top:14px"><b>Formato:</b> <span class="mono">SDOC | versão | salt | IV | cifrado AES-256-CBC | HMAC-SHA256</span>. A chave vem da senha via PBKDF2 (200 mil iterações). O HMAC também resolve o caso do <b>contrato adulterado</b>.</p>
+  <div class="rodape"><span>SecureDocs · Missão 3</span><span>11</span></div>
+</section>
+
+<!-- 12. COMPARATIVO + ESCOLHA -->
+<section class="slide">
+  <div class="topo"><h2>Comparativo e decisão: AES-256</h2><span class="aluno a5">Aluno 5 · 8:00–10:00</span></div>
+  <div class="cols" style="grid-template-columns: 1.25fr 0.75fr; gap:28px">
+    <table style="font-size:16.5px">
+      <tr><th>Critério</th><th>DES</th><th>RC5</th><th>AES</th></tr>
+      <tr><td>Estrutura</td><td>Feistel, 16 rodadas</td><td>Feistel, r rodadas</td><td>SPN, 10/12/14</td></tr>
+      <tr><td>Bloco</td><td>64 bits</td><td>64 bits (w=32)</td><td class="good">128 bits</td></tr>
+      <tr><td>Chave</td><td class="bad">56 bits</td><td>até 2040 bits</td><td class="good">128/192/256</td></tr>
+      <tr><td>Melhor ataque</td><td class="bad">força bruta em horas</td><td>diferencial 2<sup>44</sup></td><td class="good">2<sup>126</sup> (teórico)</td></tr>
+      <tr><td>Era quântica</td><td class="bad">2<sup>28</sup></td><td>2<sup>64</sup></td><td class="good">2<sup>128</sup> (AES-256)</td></tr>
+      <tr><td>Hardware</td><td>obsoleto</td><td>não</td><td class="good">AES-NI</td></tr>
+      <tr><td>Situação</td><td class="bad">retirado em 2005</td><td>não padronizado</td><td class="good">padrão mundial</td></tr>
+    </table>
+    <div>
+      <div class="card verde"><h3>Escolha: AES-256</h3><ul>
+        <li>Padrão NIST/ISO, 25 anos sem ataque prático</li>
+        <li>Bloco de 128 bits</li>
+        <li>Resiste a Grover (<i>harvest now, decrypt later</i>)</li>
+        <li>Rápido e com bibliotecas auditadas</li>
+      </ul></div>
+      <p style="font-size:16.5px; margin-top:14px">Em produção: <b>AES-256-GCM</b> (cifragem autenticada) via biblioteca auditada.</p>
+    </div>
+  </div>
+  <div class="rodape"><span>SecureDocs · Missão 3</span><span>12</span></div>
+</section>
+
+<!-- 13. DISTRIBUIÇÃO DE CHAVES -->
+<section class="slide z-menor">
+  <div class="topo"><h2>Nova descoberta: como entregar a chave secreta?</h2><span class="aluno a5">Aluno 5 · 8:00–10:00</span></div>
+  <div class="cols" style="grid-template-columns: 0.62fr 1.38fr; gap:24px">
+    <div>
+      <p style="font-size:17px; margin-bottom:8px">Se a chave AES viajar pela Internet, o invasor também a obtém. E 1.200 usuários exigiriam <b>~720 mil</b> chaves.</p>
+      <ul>
+        <li style="font-size:16px; margin-bottom:4px"><b>Canal alternativo:</b> não escala</li>
+        <li style="font-size:16px; margin-bottom:4px"><b>KDC (Kerberos):</b> ponto único de falha</li>
+        <li style="font-size:16px; margin-bottom:4px"><b>Diffie-Hellman:</b> combina o segredo sem enviá-lo, mas precisa de autenticação</li>
+        <li style="font-size:16px; margin-bottom:4px"><b>Envelope digital:</b> a nossa resposta</li>
+      </ul>
+    </div>
+    <svg viewBox="0 0 720 270" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial" font-size="12" style="width:100%; align-self:center">
+      <defs><marker id="s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker></defs>
+      <rect x="5" y="5" width="250" height="260" rx="10" fill="#ecfeff" stroke="#0f766e"/>
+      <text x="130" y="25" text-anchor="middle" font-weight="700" fill="#0f766e">REMETENTE</text>
+      <rect x="465" y="5" width="250" height="260" rx="10" fill="#ecfeff" stroke="#0f766e"/>
+      <text x="590" y="25" text-anchor="middle" font-weight="700" fill="#0f766e">DESTINATÁRIO</text>
+      <rect x="275" y="40" width="170" height="190" rx="10" fill="#fef2f2" stroke="#b91c1c" stroke-dasharray="5 4"/>
+      <text x="360" y="60" text-anchor="middle" font-weight="700" fill="#b91c1c">INTERNET</text>
+      <text x="360" y="76" text-anchor="middle" fill="#b91c1c" font-size="11">invasor vê só cifrados</text>
+      <rect x="20" y="40" width="100" height="34" rx="6" fill="#fff" stroke="#334155"/><text x="70" y="61" text-anchor="middle">Documento</text>
+      <rect x="140" y="40" width="100" height="34" rx="6" fill="#fef9c3" stroke="#a16207"/><text x="190" y="55" text-anchor="middle">Chave AES</text><text x="190" y="68" text-anchor="middle" font-size="10">aleatória (DEK)</text>
+      <rect x="20" y="110" width="100" height="40" rx="6" fill="#0b2545"/><text x="70" y="128" text-anchor="middle" fill="#fff">AES-256</text><text x="70" y="142" text-anchor="middle" fill="#cbd5e1" font-size="10">cifra o arquivo</text>
+      <rect x="140" y="160" width="100" height="40" rx="6" fill="#0f766e"/><text x="190" y="175" text-anchor="middle" fill="#fff" font-size="11">Cifra com chave</text><text x="190" y="190" text-anchor="middle" fill="#fff" font-size="11">PÚBLICA do dest.</text>
+      <line x1="70" y1="74" x2="70" y2="108" stroke="#334155" marker-end="url(#s)"/>
+      <line x1="190" y1="74" x2="190" y2="158" stroke="#334155" marker-end="url(#s)"/>
+      <path d="M150 62 Q120 90 95 108" fill="none" stroke="#a16207" stroke-dasharray="3 3" marker-end="url(#s)"/>
+      <rect x="290" y="100" width="140" height="30" rx="6" fill="#fff" stroke="#334155"/><text x="360" y="119" text-anchor="middle">Documento cifrado</text>
+      <rect x="290" y="150" width="140" height="30" rx="6" fill="#fff" stroke="#334155"/><text x="360" y="169" text-anchor="middle">Chave AES cifrada</text>
+      <line x1="120" y1="122" x2="288" y2="115" stroke="#334155" marker-end="url(#s)"/>
+      <line x1="240" y1="178" x2="288" y2="168" stroke="#334155" marker-end="url(#s)"/>
+      <rect x="600" y="150" width="105" height="40" rx="6" fill="#0f766e"/><text x="652" y="165" text-anchor="middle" fill="#fff" font-size="11">Decifra com chave</text><text x="652" y="180" text-anchor="middle" fill="#fff" font-size="11">PRIVADA</text>
+      <rect x="480" y="100" width="105" height="40" rx="6" fill="#0b2545"/><text x="532" y="118" text-anchor="middle" fill="#fff">AES-256</text><text x="532" y="132" text-anchor="middle" fill="#cbd5e1" font-size="10">decifra o arquivo</text>
+      <rect x="480" y="200" width="105" height="34" rx="6" fill="#fff" stroke="#334155"/><text x="532" y="221" text-anchor="middle">Documento</text>
+      <line x1="430" y1="115" x2="478" y2="118" stroke="#334155" marker-end="url(#s)"/>
+      <line x1="430" y1="165" x2="598" y2="170" stroke="#334155" marker-end="url(#s)"/>
+      <path d="M600 160 Q590 140 587 132" fill="none" stroke="#a16207" stroke-dasharray="3 3" marker-end="url(#s)"/>
+      <text x="625" y="140" text-anchor="middle" fill="#a16207" font-size="10">chave AES</text>
+      <line x1="532" y1="140" x2="532" y2="198" stroke="#334155" marker-end="url(#s)"/>
+      <text x="130" y="225" text-anchor="middle" font-size="10.5" fill="#334155">A chave privada nunca sai do</text>
+      <text x="130" y="239" text-anchor="middle" font-size="10.5" fill="#334155">destinatário; a chave AES nunca</text>
+      <text x="130" y="253" text-anchor="middle" font-size="10.5" fill="#334155">trafega em claro.</text>
+      <text x="360" y="210" text-anchor="middle" font-size="10.5" fill="#b91c1c">sem a chave privada,</text>
+      <text x="360" y="223" text-anchor="middle" font-size="10.5" fill="#b91c1c">nada pode ser lido</text>
+    </svg>
+  </div>
+  <div class="destaque" style="font-size:18px; margin-top:14px"><b>Resposta:</b> o AES cifra o documento, e a <b>chave pública</b> do destinatário cifra a chave AES (envelope digital). Certificados (PKI) evitam o <i>man-in-the-middle</i>, e a troca híbrida <b>X25519 + ML-KEM</b> protege contra ataques quânticos.</div>
+  <div class="rodape"><span>SecureDocs · Missão 3</span><span>13</span></div>
+</section>
+
+<!-- 14. CONCLUSÃO -->
+<section class="slide z-menor">
+  <div class="topo"><h2>Conclusão e próximas missões</h2><span class="aluno a5">Aluno 5 · 8:00–10:00</span></div>
+  <div class="cols-3" style="margin-top:6px">
+    <div class="card"><h3>O que aprendemos</h3><ul><li>Cifras clássicas e o DES não protegem mais</li><li>Tamanho da chave e do bloco é decisivo</li><li>O modo de operação importa tanto quanto o algoritmo</li></ul></div>
+    <div class="card verde"><h3>O que entregamos</h3><ul><li>Biblioteca com DES, RC5 e AES, validada por 18 testes</li><li>Cifragem de arquivo AES-256 com integridade</li><li>Ataque real ao DES</li></ul></div>
+    <div class="card verm"><h3>O que falta</h3><ul><li>Distribuir chaves com segurança</li><li>Provar <b>quem</b> enviou cada arquivo</li><li>Garantir o <b>não repúdio</b></li></ul></div>
+  </div>
+  <div class="destaque" style="margin-top:30px; font-size:22px">Próximas missões: <b>criptografia assimétrica</b>, <b>funções hash</b> e <b>assinatura digital</b>, para completar a arquitetura do SecureDocs com <b>confidencialidade, integridade, autenticidade e não repúdio</b>.</div>
+  <p style="text-align:center; font-size:38px; font-weight:800; color:var(--azul); margin-top:26px">Obrigado! Perguntas?</p>
+  <div class="rodape"><span>SecureDocs · Missão 3</span><span>14</span></div>
+</section>
+
+</body>
+</html>
